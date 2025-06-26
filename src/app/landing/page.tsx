@@ -1,6 +1,8 @@
 import Header from "@/components/landing/header";
+import Footer from "@/components/landing/footer";
 import Image from "next/image";
 import landingPage from "@/images/landingImage.jpg"
+import { styles } from "@/styles/styles";
 
 export default function LandingPage() {
     return (
@@ -26,16 +28,9 @@ export default function LandingPage() {
                         <p className="text-gray-600">Engage with your community and build lasting relationships.</p>
                     </div>
                 </section>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition duration-300">Get Started</button>
+                <button className={styles.postButton}>Get Started</button>
             </section>
-            <footer className="flex flex-col justify-center items-center gap-y-4 p-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">© 2025 FlashChat. All rights reserved.</p>
-                <div className="flex gap-4">
-                    <a href="#" className="text-sm text-gray-600">Terms of Service</a>
-                    <a href="#" className="text-sm text-gray-600">Privacy Policy</a>
-                    <a href="#" className="text-sm text-gray-600">Contact Us</a>
-                </div>
-            </footer>
+            <Footer />
         </main>
     )
 }
