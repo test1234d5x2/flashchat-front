@@ -25,7 +25,7 @@ export default function Nav() {
         },
         {
             label: "Profile",
-            href: "/portal/profile"
+            href: "/portal/profile/sagdvashgd"
         },
         {
             label: "Settings",
