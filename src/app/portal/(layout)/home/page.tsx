@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import Search from "@/components/portal/search";
-import PostList from "@/components/portal/postList";
+import PostList from "@/components/portal/posts/postList";
 
 export default function Home() {
 

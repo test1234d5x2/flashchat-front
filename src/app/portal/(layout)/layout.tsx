@@ -1,9 +1,9 @@
 "use client";
 
 import { styles } from "@/styles/styles";
-import Nav from "@/components/portal/nav";
+import Nav from "@/components/nav/nav";
 import { useState } from "react";
-import Profile from "@/components/portal/profile";
+import NavProfile from "@/components/nav/navProfile";
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
 
@@ -13,7 +13,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         <main className="flex flex-row h-screen">
             <section className={`flex flex-col justify-between border-r border-gray-200 md:w-1/5`}>
                 <section className={`absolute top-0 left-0 w-full h-full bg-white z-50 ${sidebarOpen ? "block" : "hidden"} md:relative md:block`}>
-                    <Profile />
+                    <NavProfile />
                     <Nav />
                 </section>
                 <section className="p-4 hidden md:block">

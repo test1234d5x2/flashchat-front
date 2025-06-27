@@ -1,7 +1,7 @@
 import Image from "next/image"
 import landingImage from "@/images/landingImage.jpg"
 
-export default function Profile() {
+export default function NavProfile() {
     return (
         <section className="flex flex-col items-center gap-2 p-4 border-b border-gray-200">
             <div className="w-20 h-20 relative mb-2">

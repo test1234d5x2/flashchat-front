@@ -1,3 +1,4 @@
+import Footer from "@/components/landing/footer";
 import "./globals.css";
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode;}>) {

@@ -1,7 +1,7 @@
 "use client";
 
 import Search from "@/components/portal/search";
-import PostList from "@/components/portal/postList";
+import PostList from "@/components/portal/posts/postList";
 
 export default function Explore() {
 
