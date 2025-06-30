@@ -6,6 +6,5 @@ export default async function userSearchQuery(searchQuery: string) {
         },
     });
     const data = await response.json();
-    console.log(data); // TODO: Remove
     return data;
 }
