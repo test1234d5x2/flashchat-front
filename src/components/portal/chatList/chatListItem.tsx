@@ -4,17 +4,15 @@ import Link from "next/link";
 
 export default function ChatListItem() {
     return (
-        <Link href={`/portal/messages/asghdcashfdcf`} className="cursor-pointer">
-            <div className="p-4 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded">
-                <div className="w-10 h-10 relative">
-                    <Image src={landingImage} alt="Profile" className="rounded-full object-cover" fill />
-                </div>
-                <div>
-                    <div className="font-bold">Sophia Chen</div>
-                    <div className="text-xs">I just shared a link about this c...</div>
-                </div>
-                <div className="ml-auto text-xs">3h</div>
+        <div className="p-4 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded">
+            <div className="w-10 h-10 relative">
+                <Image src={landingImage} alt="Profile" className="rounded-full object-cover" fill />
             </div>
-        </Link>
+            <div>
+                <div className="font-bold">Sophia Chen</div>
+                <div className="text-xs">I just shared a link about this c...</div>
+            </div>
+            <div className="ml-auto text-xs">3h</div>
+        </div>
     )
 }

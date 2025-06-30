@@ -1,7 +1,10 @@
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
+import convertTimestampStringToDateTime from "@/utils/convertTimestampStringToDateTime";
+import Message from "@/types/Message";
 
-export default function MyMessage() {
+export default function TheirMessage({ message }: { message: Message }) {
+    const date = convertTimestampStringToDateTime(message.timestamp);
     return (
         <section className="flex flex-row w-full items-end justify-start gap-2">
             <section>
@@ -15,8 +18,8 @@ export default function MyMessage() {
                 </div>
             </section>
             <section className="bg-gray-200 text-black p-2 rounded-lg max-w-2/3">
-                <p className="whitespace-pre-wrap">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non explicabo cumque voluptatem beatae facere neque est? Praesentium, sunt laboriosam doloremque labore tempora, consequatur ipsam possimus omnis, optio iure dignissimos assumenda? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus impedit non suscipit ratione accusamus. Officiis tempora laborum nemo, iste optio cupiditate quis eligendi. Consequatur accusantium qui deleniti optio praesentium eius.</p>
-                <p className="text-xs text-right">12:00 PM</p>
+                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className="text-xs text-right">{`${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`}</p>
             </section>
         </section>
     )
