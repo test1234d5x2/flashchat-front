@@ -47,15 +47,6 @@ export default function MessagePlaceholderPage() {
         }
     }, [searchParams]);
 
-    let userListItems = users.map((user) => {
-        // TODO: Onclick, load messages for the user.
-        return (
-            <div key={user.id} onClick={() => handleChatClick(user.id, "44e64359-94f4-4aef-b217-94d90db71502")} className="hover:bg-gray-100 p-2 cursor-pointer">
-                <UserListItem user={user} />
-            </div>
-        )
-    })
-
     const handleChatClick = (user1Id: string, user2Id: string) => {
         setChatShowing(true);
         getChat(user1Id, user2Id).then((chat) => {
@@ -92,15 +83,24 @@ export default function MessagePlaceholderPage() {
                         defaultValue={searchParams.get("search")?.toString() || ""}
                     />
                     <div className="absolute bg-white z-50 w-full flex flex-col border border-gray-200">
-                        {searchParams.get("search") ? userListItems : ""}
+                        {!searchParams.get("search") ? "" :
+                            users.map((user) => {
+                                return (
+                                    <div key={user.id} onClick={() => handleChatClick(user.id, "44e64359-94f4-4aef-b217-94d90db71502")} className="hover:bg-gray-100 p-2 cursor-pointer">
+                                        <UserListItem user={user} />
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </section>
                 <div className="overflow-y-scroll h-full">
                     {chatList.map((chat) => {
+                        let otherUser = chat.user1Id === "44e64359-94f4-4aef-b217-94d90db71502" ? chat.user2 : chat.user1;
                         return (
                             /* TODO: Need to find a way to get the user's details from the chatList from the API. */
-                            <section key={chat.id} onClick={() => handleChatClick("sasad", "asdasd")}>
-                                <ChatListItem />
+                            <section key={chat.id} onClick={() => handleChatClick(otherUser.id, "44e64359-94f4-4aef-b217-94d90db71502")} className="hover:bg-gray-100 cursor-pointer">
+                                <ChatListItem user={otherUser} />
                             </section>
                         )
                     })}

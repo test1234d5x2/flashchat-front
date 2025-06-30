@@ -10,9 +10,7 @@ export default async function getChat(user1Id: string, user2Id: string) {
         body: JSON.stringify({ user1Id, user2Id })
         })
 
-        console.log(response);
         const chatData = await response.json();
-        console.log(chatData);
         const messages: Message[] = chatData.messages;
         return {success: true, messages: messages};
     } catch (error) {
