@@ -12,9 +12,9 @@ export default async function getChat(user1Id: string, user2Id: string) {
 
         const chatData = await response.json();
         const messages: Message[] = chatData.messages;
-        return {success: true, messages: messages};
+        return {success: true, messages: messages, chatId: chatData.id};
     } catch (error) {
         console.error(error);
-        return {success: false, messages: []};
+        return {success: false, messages: [], chatId: ""};
     }
 }
