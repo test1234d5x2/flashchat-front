@@ -9,7 +9,6 @@ export default function NavProfile() {
             </div>
             <span className="font-bold text-lg">Jane Doe {/* name */}</span>
             <span className="text-gray-500 text-sm">@janedoe {/* username */}</span>
-            <span className="text-xs text-gray-400 italic">Building the future, one chat at a time. {/* tagline */}</span>
         </section>
     )
 }

@@ -1,9 +1,54 @@
+"use client"
+
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import IconNumberComponent from "@/components/iconNumberComponent";
+import Link from "next/link";
+import Post from "@/types/Post";
+import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTimeAgo";
+import checkIfPostIsLiked from "./checkIfPostIsLiked";
+import { useState, useEffect } from "react";
+import addLike from "./addLike";
+import deleteLike from "./deleteLike";
+
+export default function PostComponent({ post }: { post: Post }) {
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [likes, setLikes] = useState(post.likes.length);
+
+    useEffect(() => {
+        checkIfPostIsLiked(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+            if (data.success) {
+                setIsLiked(data.data);
+            }
+        });
+    }, [post]);
+
+    const dateSubtraction = new Date().getTime() - new Date(post.datePosted).getTime();
+    const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
 
 
-export default function Post() {
+
+    const handleLikeClick = () => {
+        if (isLiked) {
+            deleteLike(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+                if (data.success) {
+                    setIsLiked(false);
+                    setLikes(likes - 1);
+                }
+            });
+        }
+
+        else {
+            addLike(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+            if (data.success) {
+                    setIsLiked(true);
+                    setLikes(likes + 1);
+                }
+            });
+        }
+    }
+    
     return (
         <section className="w-full border-b border-gray-200">
             <div className="flex items-start gap-4 p-4">
@@ -17,48 +62,23 @@ export default function Post() {
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                        <span className="font-bold text-gray-900">Jane Doe {/* name */}</span>
-                        <span className="text-gray-500 text-sm">@janedoe {/* username */}</span>
-                        <span className="text-gray-400 text-xs ml-2">· 2h ago {/* time posted */}</span>
+                        <Link href={`/portal/profile/${post.user.username}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+                            <span className="font-bold text-gray-900">{post.user.username}</span>
+                        </Link>
+                        <span className="text-gray-500 text-sm">@{post.user.username}</span>
+                        <span className="text-gray-400 text-xs ml-2">· {timeAgo}</span>
                     </div>
                     <p className="text-gray-800">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum quia obcaecati quo similique doloremque, dolorum illum rerum laudantium modi et minima animi placeat. Debitis eaque nihil tenetur nam rem. {/* post content */}
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum quia obcaecati quo similique doloremque, dolorum illum rerum laudantium modi et minima animi placeat. Debitis eaque nihil tenetur nam rem.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum quia obcaecati quo similique doloremque, dolorum illum rerum laudantium modi et minima animi placeat. Debitis eaque nihil tenetur nam rem.
+                        {post.post}
                     </p>
                     <div className="flex flex-row gap-2 overflow-x-scroll">
-                        <Image
-                            src={landingImage}
-                            alt="Post content"
-                            className="rounded-lg object-cover cursor-pointer"
-                            width={200}
-                            height={200}
-                        />
-                        <Image
-                            src={landingImage}
-                            alt="Post content"
-                            className="rounded-lg object-cover cursor-pointer"
-                            width={200}
-                            height={200}
-                        />
-                        <Image
-                            src={landingImage}
-                            alt="Post content"
-                            className="rounded-lg object-cover cursor-pointer"
-                            width={200}
-                            height={200}
-                        />
-                        <Image
-                            src={landingImage}
-                            alt="Post content"
-                            className="rounded-lg object-cover cursor-pointer"
-                            width={200}
-                            height={200}
-                        />
                     </div>
                     <div className="flex gap-6 mt-4 text-gray-500 text-sm">
+                        {/* TODO: Get comments, likes, and views */}
                         <IconNumberComponent icon="chat" number={12} /> {/* comments */}
-                        <IconNumberComponent icon="favorite" number={34} /> {/* likes */}
+                        <section className={`${isLiked ? "text-blue-500" : ""} cursor-pointer hover:text-blue-500`} onClick={(e) => (e.stopPropagation(), handleLikeClick())}>
+                            <IconNumberComponent icon="favorite" number={likes} /> {/* likes */}
+                        </section>
                         <IconNumberComponent icon="visibility" number={120} /> {/* views */}
                     </div>
                 </div>

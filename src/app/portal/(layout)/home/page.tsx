@@ -4,21 +4,39 @@ import styles from "@/styles/styles";
 import { useState } from "react";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
-import Search from "@/components/portal/search";
 import PostList from "@/components/portal/posts/postList";
+import createPost from "./createPost";
 
 export default function Home() {
 
     const [selectedTab, setSelectedTab] = useState("For You")
+    const [message, setMessage] = useState("");
+
+
+    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
+
+    const handleSubmit = async (formData: FormData) => {
+        const post = formData.get("post")?.toString();
+        if (!post) {
+            setMessage("Post cannot be empty");
+            return;
+        }
+
+        let result = await createPost(LOGGED_IN_USER_ID, post);
+
+        if (result.success) {
+            setMessage(result.message);
+        }
+        else {
+            setMessage(result.message);
+        }
+    }
 
     return (
         <div className="flex flex-col overflow-y-scroll">
             <section>
                 <section className="border-b border-gray-200 p-4">
                     <h1 className="text-2xl font-bold">Home</h1>
-                </section>
-                <section className="border-b border-gray-200 p-4 bg-gray-100">
-                    <Search />
                 </section>
                 <section className="px-4 pt-4 pb-0 border-b border-gray-200 bg-gray-100">
                     <div className="flex justify-between w-full">
@@ -32,9 +50,9 @@ export default function Home() {
                             <Image src={landingImage} alt="Profile Photo" className="rounded-full object-cover" fill />
                         </div>
                     </div>
-                    <div className="w-full">
+                    <form className="w-full" action={handleSubmit}>
                         <div>
-                            <input type="text" placeholder="What's on your mind?" className="w-full p-2 rounded-md border border-gray-300 focus:border-highlight-default focus:outline-none" />
+                            <input type="text" placeholder="What's on your mind?" className="w-full p-2 rounded-md border border-gray-300 focus:border-highlight-default focus:outline-none" name="post" />
                         </div>
                         <div className="flex flex-row justify-between p-4">
                             <div className="flex flex-row gap-2 py-2">
@@ -44,12 +62,19 @@ export default function Home() {
                             </div>
                             <button className={styles.postButton}>Post</button>
                         </div>
-                    </div>
+                    </form>
                 </section>
                 <section className="flex flex-col bg-gray-100 overflow-y-scroll">
+                    {/* TODO: Implement feed. Retrieve all posts for now. */}
                     <PostList />
                 </section>
             </section>
+            {message && <section className="absolute z-100 left-0 top-0 w-full flex justify-center items-center">
+                <div className={`flex flex-row gap-2 p-4 ${message.includes("Error") ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                    <span className="text-center">{message}</span>
+                    <span className={`material-symbols-outlined cursor-pointer`} onClick={() => setMessage("")}>close</span>
+                </div>
+            </section>}
         </div>
     );
 }

@@ -1,5 +1,3 @@
-import Header from "@/components/landing/header";
-import Footer from "@/components/landing/footer";
 import Image from "next/image";
 import landingPage from "@/images/landingImage.jpg"
 import { styles } from "@/styles/styles";
