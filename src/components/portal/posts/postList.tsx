@@ -1,69 +1,32 @@
-import Link from "next/link";
-import Post from "./post";
+"use client"
 
-export default function PostList() {
+import PostComponent from "@/components/portal/posts/post";
+import { useRouter } from "next/navigation";
+import getPosts from "./getPosts";
+import { useEffect, useState } from "react";
+import Post from "@/types/Post";
+
+export default function PostList({}) {
+
+    const router = useRouter();
+
+    const [posts, setPosts] = useState<Post[]>([]);
+
+    useEffect(() => {
+        getPosts("44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+            if (data.success) {
+                setPosts(data.data);
+            }
+        });
+    }, []);
+
     return (
         <div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/1">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/2">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/3">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/4">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/5">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/6">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/7">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/8">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/9">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/10">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/11">
-                    <Post />
-                </Link>
-            </div>
-            <div className="hover:bg-white">
-                <Link href="/portal/post/12">
-                    <Post />
-                </Link>
-            </div>
+
+            {posts.map((post, index) => (
+                <div className="hover:bg-white cursor-pointer" key={index} onClick={() => router.push(`/portal/post/${post.id}`)}>
+                    <PostComponent post={post} />
+                </div>
+            ))}
         </div>
-    )
-}
+    )}

@@ -59,9 +59,9 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
             <section className="flex flex-col py-4 gap-4 justify-end items-start flex-1 border-b border-gray-200 overflow-y-scroll">
                 {messages.map((message: Message) =>
                     message.senderId === loggedInUserId ? (
-                        <MyMessage key={message.timestamp + message.senderId} message={message} />
+                        <MyMessage key={message.id} message={message} />
                     ) : (
-                        <TheirMessage key={message.timestamp + message.senderId} message={message} />
+                        <TheirMessage key={message.id} message={message} />
                     )
                 )}
             </section>
