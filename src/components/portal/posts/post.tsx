@@ -10,26 +10,32 @@ import checkIfPostIsLiked from "./checkIfPostIsLiked";
 import { useState, useEffect } from "react";
 import addLike from "./addLike";
 import deleteLike from "./deleteLike";
+import UserMessage from "@/components/userMessage";
 
 export default function PostComponent({ post }: { post: Post }) {
 
+    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
+
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(post.likes.length);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
-        checkIfPostIsLiked(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+        checkIfPostIsLiked(post.id, LOGGED_IN_USER_ID).then((data) => {
             if (data.success) {
                 setIsLiked(data.data);
             }
         });
     }, [post]);
 
-    const dateSubtraction = new Date().getTime() - new Date(post.datePosted).getTime();
-    const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
-
     const handleLikeClick = () => {
+        if (post.user.id === LOGGED_IN_USER_ID) {
+            setMessage("You cannot like your own post");
+            return;
+        }
+
         if (isLiked) {
-            deleteLike(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
+            deleteLike(post.id, LOGGED_IN_USER_ID).then((data) => {
                 if (data.success) {
                     setIsLiked(false);
                     setLikes(likes - 1);
@@ -38,14 +44,17 @@ export default function PostComponent({ post }: { post: Post }) {
         }
 
         else {
-            addLike(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
-            if (data.success) {
+            addLike(post.id, LOGGED_IN_USER_ID).then((data) => {
+                if (data.success) {
                     setIsLiked(true);
                     setLikes(likes + 1);
                 }
             });
         }
     }
+
+    const dateSubtraction = new Date().getTime() - new Date(post.datePosted).getTime();
+    const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
     
     return (
         <section className="w-full border-b border-gray-200">
@@ -80,6 +89,7 @@ export default function PostComponent({ post }: { post: Post }) {
                     </div>
                 </div>
             </div>
+            {message && <UserMessage message={message} setMessage={setMessage} />}
         </section>
     );
 }
