@@ -1,19 +1,24 @@
 import Post from "@/components/portal/posts/post";
-import CommentsList from "@/components/portal/comments/commentsList";
 import landingImage from "@/images/landingImage.jpg";
 import Image from "next/image";
 import getPost from "@/components/portal/posts/getPost";
+import CommentComponent from "@/components/portal/comments/comment";
+import Comment from "@/types/Comment";
+import AddCommentForm from "@/components/portal/forms/addCommentForm";
 
 export default async function PostDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
 
-    const post = await getPost(id);
+    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
 
-    if (!post.success || !post.data) {
-        return <div>Post not found</div>;
+    const post = await getPost(id);
+    const postData = post.data;
+
+    if (!post.success || !postData) {
+        return <div>Post not found</div>
     }
 
-    const postData = post.data;
+    console.log(postData.comments);
 
     return (
         <section className="flex flex-row h-screen justify-center">
@@ -24,8 +29,18 @@ export default async function PostDetailsPage({ params }: { params: { id: string
                 <div>
                     <Post post={postData} />
                 </div>
-                <section className="p-4 flex flex-col gap-4 flex-1">   
-                    <CommentsList />
+                <section>
+                    <AddCommentForm postId={id} userId={LOGGED_IN_USER_ID} />
+                </section>
+                <section className="flex flex-col flex-1 p-2">
+                    <h2 className="text-lg font-bold">Comments ({postData.comments.length})</h2>
+                    <div className="flex flex-col gap-2">
+                        {postData.comments.map((comment: Comment) => {
+                            return (
+                                <CommentComponent key={comment.id} comment={comment} postId={id} userId={LOGGED_IN_USER_ID} />
+                            )
+                        })}
+                    </div>
                 </section>
             </section>
         </section>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import PostList from "@/components/portal/posts/postList";
 import createPost from "./createPost";
+import UserMessage from "@/components/userMessage";
 
 export default function Home() {
 
@@ -18,7 +19,7 @@ export default function Home() {
     const handleSubmit = async (formData: FormData) => {
         const post = formData.get("post")?.toString();
         if (!post) {
-            setMessage("Post cannot be empty");
+            setMessage("Error: Post cannot be empty");
             return;
         }
 
@@ -69,12 +70,7 @@ export default function Home() {
                     <PostList />
                 </section>
             </section>
-            {message && <section className="absolute z-100 left-0 top-0 w-full flex justify-center items-center">
-                <div className={`flex flex-row gap-2 p-4 ${message.includes("Error") ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
-                    <span className="text-center">{message}</span>
-                    <span className={`material-symbols-outlined cursor-pointer`} onClick={() => setMessage("")}>close</span>
-                </div>
-            </section>}
+            {message && <UserMessage message={message} setMessage={setMessage} />}
         </div>
     );
 }

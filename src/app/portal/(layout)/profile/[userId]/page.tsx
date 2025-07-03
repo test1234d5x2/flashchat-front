@@ -1,14 +1,21 @@
-import ProfileCard from "@/components/portal/profileCard";
+import ProfileCard from "@/components/portal/profileCard/profileCard";
 import PostList from "@/components/portal/posts/postList";
+import getUser from "../getUser";
 
 interface ProfilePageProps {
     params: {
-        tagline: string;
+        userId: string;
     };
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-    const { tagline } = await params;
+    const { userId } = await params;
+
+    const data = await getUser(userId);
+    const user = data.data;
+    if (!data.success || !user) {
+        return <div>User not found</div>;
+    }
 
     return (
         <section className="flex flex-col">
@@ -16,13 +23,13 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 <h1 className="text-2xl font-bold">Profile</h1>
             </section>
             <section className="p-8 bg-gray-100">
-                <ProfileCard tagline={tagline} />
+                <ProfileCard user={user} />
             </section>
             <section className="p-8 bg-gray-100">
                 <section className="flex flex-col gap-4 justify-between md:flex-row">
-                    <Stats number={100} text="Posts" />
-                    <Stats number={100} text="Followers" />
-                    <Stats number={100} text="Following" />
+                    <Stats number={user.postsCount} text="Posts" />
+                    <Stats number={user.followersCount} text="Followers" />
+                    <Stats number={user.followingCount} text="Following" />
                 </section>
             </section>
             <section className="px-8 bg-gray-100">

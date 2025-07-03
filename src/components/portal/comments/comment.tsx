@@ -1,12 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import IconNumberComponent from "@/components/iconNumberComponent";
 import Link from "next/link";
+import type Comment from "@/types/Comment";
+import AddCommentForm from "../forms/addCommentForm";
+import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTimeAgo";
+import { useState } from "react";
+import CommentComponent from "./comment";
 
-export default function Comment() {
+export default function Comment({ comment, postId, userId }: { comment: Comment, postId: string, userId: string }) {
+
+    const [showCommentReply, setShowCommentReply] = useState(false);
+
     return (
-        <section className="p-4 w-full border-b border-gray-200">
-            <div className="flex items-start gap-4">
+        <section className="p-4 w-full">
+            <section className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full relative">
                     <Image
                         src={landingImage}
@@ -17,22 +27,29 @@ export default function Comment() {
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                        <Link href={`/portal/profile/janedoe`} className="hover:underline">
-                            <span className="font-bold text-gray-900">Jane Doe {/* name */}</span>
+                        <Link href={`/portal/profile/${comment.user.id}`} className="hover:underline">
+                            <span className="font-bold text-gray-900">{comment.user.username}</span>
                         </Link>
-                        <span className="text-gray-500 text-sm">@janedoe {/* username */}</span>
-                        <span className="text-gray-400 text-xs ml-2">· 2h ago {/* time posted */}</span>
+                        <span className="text-gray-500 text-sm">{comment.user.username}</span>
+                        <span className="text-gray-400 text-xs ml-2">{convertDateSubtractionToTimeAgo(new Date().getTime() - new Date(comment.datePosted).getTime())}</span>
                     </div>
                     <p className="text-gray-800">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum quia obcaecati quo similique doloremque, dolorum illum rerum laudantium modi et minima animi placeat. Debitis eaque nihil tenetur nam rem. {/* post content */}
+                        {comment.comment}
                     </p>
                     <div className="flex gap-6 mt-4 text-gray-500 text-sm">
-                        <IconNumberComponent icon="chat" number={12} /> {/* comments */}
-                        <IconNumberComponent icon="favorite" number={34} /> {/* likes */}
-                        <IconNumberComponent icon="visibility" number={120} /> {/* views */}
+                        <IconNumberComponent icon="chat" number={comment.replies.length} /> {/* comments */}
+                        <div className="material-symbols-outlined cursor-pointer hover:text-blue-500" onClick={() => setShowCommentReply(!showCommentReply)}>{showCommentReply ? "close" : "reply"}</div>
                     </div>
+                    {showCommentReply && (
+                    <div>
+                        <AddCommentForm postId={postId} userId={userId} parentCommentId={comment.id} />
+                    </div>
+                    )}
+                    {comment.replies.map((reply: Comment) => (
+                        <CommentComponent key={reply.id} comment={reply} postId={postId} userId={userId} />
+                    ))}
                 </div>
-            </div>
+            </section>
         </section>
     )
 }
