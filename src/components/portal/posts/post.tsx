@@ -27,8 +27,6 @@ export default function PostComponent({ post }: { post: Post }) {
     const dateSubtraction = new Date().getTime() - new Date(post.datePosted).getTime();
     const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
 
-
-
     const handleLikeClick = () => {
         if (isLiked) {
             deleteLike(post.id, "44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
@@ -62,7 +60,7 @@ export default function PostComponent({ post }: { post: Post }) {
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                        <Link href={`/portal/profile/${post.user.username}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+                        <Link href={`/portal/profile/${post.user.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
                             <span className="font-bold text-gray-900">{post.user.username}</span>
                         </Link>
                         <span className="text-gray-500 text-sm">@{post.user.username}</span>
@@ -74,12 +72,11 @@ export default function PostComponent({ post }: { post: Post }) {
                     <div className="flex flex-row gap-2 overflow-x-scroll">
                     </div>
                     <div className="flex gap-6 mt-4 text-gray-500 text-sm">
-                        {/* TODO: Get comments, likes, and views */}
-                        <IconNumberComponent icon="chat" number={12} /> {/* comments */}
+                        <IconNumberComponent icon="chat" number={post.comments.length} /> {/* comments */}
                         <section className={`${isLiked ? "text-blue-500" : ""} cursor-pointer hover:text-blue-500`} onClick={(e) => (e.stopPropagation(), handleLikeClick())}>
                             <IconNumberComponent icon="favorite" number={likes} /> {/* likes */}
                         </section>
-                        <IconNumberComponent icon="visibility" number={120} /> {/* views */}
+                        <IconNumberComponent icon="visibility" number={post.views} /> {/* views */}
                     </div>
                 </div>
             </div>

@@ -103,7 +103,6 @@ export default function MessagePlaceholderPage() {
                     {chatList.map((chat) => {
                         let otherUser = chat.user1Id === LOGGED_IN_USER_ID ? chat.user2 : chat.user1;
                         return (
-                            /* TODO: Need to find a way to get the user's details from the chatList from the API. */
                             <section key={chat.id} onClick={() => handleChatClick(otherUser.id, LOGGED_IN_USER_ID)} className="hover:bg-gray-100 cursor-pointer">
                                 <ChatListItem user={otherUser} />
                             </section>
