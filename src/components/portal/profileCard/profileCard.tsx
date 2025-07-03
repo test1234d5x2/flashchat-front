@@ -11,9 +11,7 @@ export default async function ProfileCard({ user }: { user: User }) {
 
     const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
     const isFollowingResponse = await checkFollow(LOGGED_IN_USER_ID, user.id);
-    const isFollowing = isFollowingResponse.isFollowing;
-
-    
+    const isFollowing = isFollowingResponse.isFollowing;    
 
     const handleFollow = async (formData: FormData) => {
         "use server";
@@ -32,9 +30,11 @@ export default async function ProfileCard({ user }: { user: User }) {
                     <span className="font-bold text-gray-900 text-xl">{user.username} {/* name */}</span>
                     <span>@{user.username} {/* tagline */}</span>
                 </div>
-                <form action={handleFollow}>
-                    <button className={styles.postButton}>{isFollowing ? "Following" : "Follow"}</button>
-                </form>
+                {LOGGED_IN_USER_ID !== user.id && (
+                    <form action={handleFollow}>
+                        <button className={styles.postButton}>{isFollowing ? "Following" : "Follow"}</button>
+                    </form>
+                )}
             </section>
         </section>
     )   

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import MyMessage from "./myMessage";
 import TheirMessage from "./theirMessage";
@@ -6,6 +8,8 @@ import sendMessage from "@/app/portal/messages/sendMessage";
 import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
+import User from "@/types/User";
+import getUser from "@/app/portal/(layout)/profile/getUser";
 
 interface MessageAreaProps {
     otherUserId: string;
@@ -15,6 +19,16 @@ interface MessageAreaProps {
 export default function MessageArea({ otherUserId, loggedInUserId }: MessageAreaProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatError, setChatError] = useState(false);
+    const [otherUser, setOtherUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        if (!otherUserId) return;
+        getUser(otherUserId).then((user) => {
+            if (user.success) {
+                setOtherUser(user.data);
+            }
+        });
+    }, [otherUserId]);
 
     useEffect(() => {
         if (!otherUserId) return;
@@ -54,7 +68,7 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
     return (
         <section className="p-4 flex flex-col justify-between w-full gap-4 h-full">
             <section className="border-b border-gray-200 w-full p-4 text-center">
-                <h1 className="text-2xl font-bold">Name of Person</h1>
+                <h1 className="text-2xl font-bold">{otherUser?.username}</h1>
             </section>
             <section className="flex flex-col py-4 gap-4 justify-end items-start flex-1 border-b border-gray-200 overflow-y-scroll">
                 {messages.map((message: Message) =>
