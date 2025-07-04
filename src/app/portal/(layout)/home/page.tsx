@@ -1,7 +1,7 @@
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import PostList from "@/components/portal/posts/postList";
-import AddPostForm from "@/components/portal/forms/addPostForm";
+import AddPostForm from "@/components/forms/addPostForm";
 import HomeTabs from "@/components/portal/homeTabs";
 
 export default function Home() {

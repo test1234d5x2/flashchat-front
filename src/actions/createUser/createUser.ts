@@ -1,6 +1,6 @@
 'use server';
 
-const createUser = async (username: string, password: string) => {
+const createUser = async (username: string, handle: string, password: string) => {
     try {
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users`, {
@@ -8,11 +8,15 @@ const createUser = async (username: string, password: string) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, handle, password }),
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
+            return { success: false, message: "Failed to create user" };
+        }
+
+        const success = await response.json();
+        if (!success) {
             return { success: false, message: "Failed to create user" };
         }
 

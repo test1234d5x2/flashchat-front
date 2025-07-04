@@ -4,7 +4,7 @@ import Image from "next/image";
 import getPost from "@/components/portal/posts/getPost";
 import CommentComponent from "@/components/portal/comments/comment";
 import Comment from "@/types/Comment";
-import AddCommentForm from "@/components/portal/forms/addCommentForm";
+import AddCommentForm from "@/components/forms/addCommentForm";
 
 export default async function PostDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
