@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import addLike from "./addLike";
 import deleteLike from "./deleteLike";
 import UserMessage from "@/components/userMessage";
+import ReportModal from "@/components/reportModal";
 
 export default function PostComponent({ post }: { post: Post }) {
 
@@ -19,6 +20,7 @@ export default function PostComponent({ post }: { post: Post }) {
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(post.likes.length);
     const [message, setMessage] = useState("");
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     useEffect(() => {
         checkIfPostIsLiked(post.id, LOGGED_IN_USER_ID).then((data) => {
@@ -30,7 +32,7 @@ export default function PostComponent({ post }: { post: Post }) {
 
     const handleLikeClick = () => {
         if (post.user.id === LOGGED_IN_USER_ID) {
-            setMessage("You cannot like your own post");
+            setMessage("Error: You cannot like your own post");
             return;
         }
 
@@ -57,39 +59,50 @@ export default function PostComponent({ post }: { post: Post }) {
     const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
     
     return (
-        <section className="w-full border-b border-gray-200">
-            <div className="flex items-start gap-4 p-4">
-                <div className="w-10 h-10 rounded-full relative">
-                    <Image  
-                        src={landingImage}
-                        alt="Profile"
-                        className="rounded-full object-cover"
-                        fill
-                    />
-                </div>
-                <div className="flex-1 flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                        <Link href={`/portal/profile/${post.user.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-                            <span className="font-bold text-gray-900">{post.user.username}</span>
-                        </Link>
-                        <span className="text-gray-500 text-sm">@{post.user.username}</span>
-                        <span className="text-gray-400 text-xs ml-2">· {timeAgo}</span>
+        <section className="w-full">
+            <section>
+                <section className="w-full border-b border-gray-200">
+                    <div className="flex items-start gap-4 p-4">
+                        <div className="w-10 h-10 rounded-full relative">
+                            <Image  
+                                src={landingImage}
+                                alt="Profile"
+                                className="rounded-full object-cover"
+                                fill
+                            />
+                        </div>
+                        <div className="flex-1 flex flex-col gap-2">
+                            <div className="flex items-center gap-2">
+                                <Link href={`/portal/profile/${post.user.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+                                    <span className="font-bold text-gray-900">{post.user.username}</span>
+                                </Link>
+                                <span className="text-gray-500 text-sm">@{post.user.username}</span>
+                                <span className="text-gray-400 text-xs ml-2">· {timeAgo}</span>
+                            </div>
+                            <p className="text-gray-800">
+                                {post.post}
+                            </p>
+                            <div className="flex flex-row gap-2 overflow-x-scroll">
+                            </div>
+                            <div className="flex gap-6 mt-4 text-gray-500 text-sm">
+                                <IconNumberComponent icon="chat" number={post.comments.length} /> {/* comments */}
+                                <section className={`${isLiked ? "text-blue-500" : ""} cursor-pointer hover:text-blue-500`} onClick={(e) => (e.stopPropagation(), handleLikeClick())}>
+                                    <IconNumberComponent icon="favorite" number={likes} /> {/* likes */}
+                                </section>
+                                <IconNumberComponent icon="visibility" number={post.views} /> {/* views */}
+                                <section onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsReportModalOpen(true);
+                                }}>
+                                    <div className="material-symbols-outlined hover:text-red-500 cursor-pointer">flag_2</div>
+                                </section>
+                            </div>
+                        </div>
                     </div>
-                    <p className="text-gray-800">
-                        {post.post}
-                    </p>
-                    <div className="flex flex-row gap-2 overflow-x-scroll">
-                    </div>
-                    <div className="flex gap-6 mt-4 text-gray-500 text-sm">
-                        <IconNumberComponent icon="chat" number={post.comments.length} /> {/* comments */}
-                        <section className={`${isLiked ? "text-blue-500" : ""} cursor-pointer hover:text-blue-500`} onClick={(e) => (e.stopPropagation(), handleLikeClick())}>
-                            <IconNumberComponent icon="favorite" number={likes} /> {/* likes */}
-                        </section>
-                        <IconNumberComponent icon="visibility" number={post.views} /> {/* views */}
-                    </div>
-                </div>
-            </div>
-            {message && <UserMessage message={message} setMessage={setMessage} />}
+                </section>
+                {message && <UserMessage message={message} setMessage={setMessage} />}
+            </section>
+            {isReportModalOpen && <ReportModal postId={post.id} userId={post.user.id} setIsReportModalOpen={setIsReportModalOpen} />}
         </section>
     );
 }
