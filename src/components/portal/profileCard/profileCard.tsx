@@ -28,7 +28,7 @@ export default async function ProfileCard({ user }: { user: User }) {
             <section className="flex flex-row justify-between items-center w-full">
                 <div className="flex flex-col gap-2">
                     <span className="font-bold text-gray-900 text-xl">{user.username} {/* name */}</span>
-                    <span>@{user.username} {/* tagline */}</span>
+                    <span>@{user.handle} {/* handle */}</span>
                 </div>
                 {LOGGED_IN_USER_ID !== user.id && (
                     <form action={handleFollow}>
