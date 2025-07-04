@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import MyMessage from "./myMessage";
 import TheirMessage from "./theirMessage";
 import getChat from "@/app/portal/messages/getChat";
-import sendMessage from "@/app/portal/messages/sendMessage";
 import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import User from "@/types/User";
 import getUser from "@/app/portal/(layout)/profile/getUser";
+import handleSendMessage from "@/actions/sendMessage/handleSendMessage";
 
 interface MessageAreaProps {
     otherUserId: string;
@@ -20,6 +20,7 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatError, setChatError] = useState(false);
     const [otherUser, setOtherUser] = useState<User | null>(null);
+    const [chatId, setChatId] = useState<string>("");
 
     useEffect(() => {
         if (!otherUserId) return;
@@ -27,6 +28,7 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
             if (user.success) {
                 setOtherUser(user.data);
             }
+            // TODO: If there is no user, redirect to error page.
         });
     }, [otherUserId]);
 
@@ -35,6 +37,7 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
         getChat(otherUserId, loggedInUserId).then((chat) => {   
             if (chat.success) {
                 setMessages(chat.messages);
+                setChatId(chat.chatId);
                 setChatError(false);
             } else {
                 setMessages([]);
@@ -43,18 +46,21 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
         });
     }, [otherUserId, loggedInUserId]);
 
-    const handleSendMessage = async (formData: FormData) => {
-        const message = formData.get("message")?.toString() || "";
-        if (message.length > 0) {
-            await sendMessage(otherUserId, message, loggedInUserId);
-            // Refresh messages after sending
+    const handleSubmit = (formData: FormData) => {
+        handleSendMessage(formData, chatId, loggedInUserId).then(() => {
             getChat(otherUserId, loggedInUserId).then((chat) => {
                 if (chat.success) {
                     setMessages(chat.messages);
+                    setChatId(chat.chatId);
                     setChatError(false);
+                } else {
+                    setMessages([]);
+                    setChatError(true);
                 }
             });
-        }
+        }).catch((error) => {
+            setChatError(true);
+        });
     };
 
     if (chatError) {
@@ -79,7 +85,7 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
                     )
                 )}
             </section>
-            <form className="flex flex-row gap-4 items-center w-full" action={handleSendMessage}>
+            <form className="flex flex-row gap-4 items-center w-full" action={handleSubmit}>
                 <div>
                     <div className="w-10 h-10 rounded-full relative">
                         <Image src={landingImage} alt="Profile" className="rounded-full object-cover" fill />

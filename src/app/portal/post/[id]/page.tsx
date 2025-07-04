@@ -18,8 +18,6 @@ export default async function PostDetailsPage({ params }: { params: { id: string
         return <div>Post not found</div>
     }
 
-    console.log(postData.comments);
-
     return (
         <section className="flex flex-row h-screen justify-center">
             {/* {<div className="w-1/2 flex items-center justify-center max-h-screen">
