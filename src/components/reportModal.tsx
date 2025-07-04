@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import handleAddReport from "@/actions/handleAddReport";
+import handleAddReport from "@/actions/addReport/handleAddReport";
 import { useRouter } from "next/navigation";
 
 const reasons = [
@@ -18,14 +18,8 @@ export default function ReportModal({ postId, userId, setIsReportModalOpen }: { 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError(null);
-        setLoading(true);
-
-        const formData = new FormData(e.currentTarget);
+    const handleAddReportWithDetails = async (formData: FormData) => {
         formData.set("reason", chosenReason === "Other" ? otherReason : chosenReason);
-
         try {
             await handleAddReport(formData, postId, userId);
             setIsReportModalOpen(false); 
@@ -43,7 +37,7 @@ export default function ReportModal({ postId, userId, setIsReportModalOpen }: { 
                 <span className="material-symbols-outlined text-white text-4xl cursor-pointer absolute top-4 right-4" onClick={() => setIsReportModalOpen(false)}>close</span>
                 <h1 className="text-2xl font-bold">Report Modal</h1>
                 <p>Please select the reason for reporting this post.</p>
-                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                <form className="flex flex-col gap-4" action={handleAddReportWithDetails}>
                     <select name="reason" onChange={e => setChosenReason(e.target.value)}>
                         {reasons.map(reason => (
                             <option key={reason} value={reason}>{reason}</option>
