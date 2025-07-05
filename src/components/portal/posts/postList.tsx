@@ -2,23 +2,15 @@
 
 import PostComponent from "@/components/portal/posts/post";
 import { useRouter } from "next/navigation";
-import getPosts from "./getPosts";
-import { useEffect, useState } from "react";
 import Post from "@/types/Post";
 
-export default function PostList({}) {
+export default function PostList({ posts }: { posts?: Post[] }) {
 
     const router = useRouter();
 
-    const [posts, setPosts] = useState<Post[]>([]);
-
-    useEffect(() => {
-        getPosts("44e64359-94f4-4aef-b217-94d90db71502").then((data) => {
-            if (data.success) {
-                setPosts(data.data);
-            }
-        });
-    }, []);
+    if (!posts) {
+        return <div>No posts</div>;
+    }
 
     return (
         <div>

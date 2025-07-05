@@ -3,8 +3,8 @@
 import ChatListItem from "../chatList/chatListItem";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import getChat from "@/app/portal/messages/getChat";
-import getChatList from "@/app/portal/messages/getChatList";
+import getChat from "@/apiCalls/getChat";
+import getChatList from "@/apiCalls/getChatList";
 import UserSearch from "./UserSearch";
 
 

@@ -5,7 +5,7 @@ import landingImage from "@/images/landingImage.jpg";
 import IconNumberComponent from "@/components/iconNumberComponent";
 import Link from "next/link";
 import type Comment from "@/types/Comment";
-import AddCommentForm from "../../forms/addCommentForm";
+import AddCommentForm from "@/components/forms/addCommentForm";
 import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTimeAgo";
 import { useState } from "react";
 import CommentComponent from "./comment";

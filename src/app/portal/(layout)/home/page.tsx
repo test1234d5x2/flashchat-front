@@ -3,8 +3,17 @@ import landingImage from "@/images/landingImage.jpg";
 import PostList from "@/components/portal/posts/postList";
 import AddPostForm from "@/components/forms/addPostForm";
 import HomeTabs from "@/components/portal/homeTabs";
+import getPosts from "@/apiCalls/getPosts";
 
-export default function Home() {
+export default async function Home() {
+
+    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
+
+    const postsData = await getPosts(LOGGED_IN_USER_ID);
+    const posts = postsData.data;
+    if (!postsData.success) {
+        return <div>Posts not found</div>;
+    }
 
     return (
         <div className="flex flex-col overflow-y-scroll">
@@ -27,7 +36,7 @@ export default function Home() {
                 </section>
                 <section className="flex flex-col bg-gray-100 overflow-y-scroll">
                     {/* TODO: Implement feed. Retrieve all posts for now. */}
-                    <PostList />
+                    {posts ? <PostList posts={posts} /> : <div>No posts</div>}
                 </section>
             </section>
         </div>
