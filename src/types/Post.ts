@@ -1,6 +1,7 @@
 import Like from "./Like";
 import User from "./User";
 import Comment from "./Comment";
+import Media from "./Media";
 
 interface Post {
     id: string;
@@ -10,6 +11,7 @@ interface Post {
     likes: Like[];
     views: number;
     comments: Comment[];
+    media: Media[];
 }
 
 export default Post;
