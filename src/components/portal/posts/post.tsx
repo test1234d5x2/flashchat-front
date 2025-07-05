@@ -12,6 +12,7 @@ import addLike from "@/apiCalls/addLike";
 import deleteLike from "@/apiCalls/deleteLike";
 import UserMessage from "@/components/userMessage";
 import ReportModal from "@/components/reportModal";
+import getMedia from "@/apiCalls/getMedia";
 
 export default function PostComponent({ post }: { post: Post }) {
 
@@ -55,9 +56,15 @@ export default function PostComponent({ post }: { post: Post }) {
         }
     }
 
+    // TODO: Below doesn't work, need to fix.
+    const media = post.media.map(async (media) => {
+        const mediaData = await getMedia(media.id);
+        return mediaData;
+    })
+
     const dateSubtraction = new Date().getTime() - new Date(post.datePosted).getTime();
     const timeAgo = convertDateSubtractionToTimeAgo(dateSubtraction);
-    
+
     return (
         <section className="w-full">
             <section>
@@ -82,6 +89,11 @@ export default function PostComponent({ post }: { post: Post }) {
                             <p className="text-gray-800">
                                 {post.post}
                             </p>
+                            <section>
+                                <div className="flex flex-row gap-2 overflow-x-scroll">
+
+                                </div>
+                            </section>
                             <div className="flex flex-row gap-2 overflow-x-scroll">
                             </div>
                             <div className="flex gap-6 mt-4 text-gray-500 text-sm">

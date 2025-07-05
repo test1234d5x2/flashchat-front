@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 export default function UserMessage({ message, setMessage }: { message: string, setMessage: (message: string) => void }) {
 
     return (
