@@ -5,7 +5,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useEffect, useState } from "react";
 import User from "@/types/User";
 import UserListItem from "../userList/userListItem";
-import userSearchQuery from "@/app/portal/messages/userSearchQuery";
+import userSearchQuery from "@/apiCalls/userSearchQuery";
 
 export default function UserSearch({ handleChatClick }: { handleChatClick: (user1Id: string, user2Id: string) => void }) {
 

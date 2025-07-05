@@ -2,9 +2,9 @@ import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import styles from "@/styles/styles";
 import User from "@/types/User";
-import createFollow from "./createFollow";
-import checkFollow from "./checkFollow";
-import unfollow from "./unfollow";
+import createFollow from "@/apiCalls/createFollow";
+import checkFollow from "@/apiCalls/checkFollow";
+import unfollow from "@/apiCalls/unfollow";
 import { revalidatePath } from "next/cache";
 
 export default async function ProfileCard({ user }: { user: User }) {
@@ -17,6 +17,7 @@ export default async function ProfileCard({ user }: { user: User }) {
         "use server";
 
         const response = isFollowing ? await unfollow(LOGGED_IN_USER_ID, user.id) : await createFollow(LOGGED_IN_USER_ID, user.id);
+        // TODO: If the response is not successful, show an error message.
         revalidatePath(`/portal/profile/${user.id}`);
     }
 

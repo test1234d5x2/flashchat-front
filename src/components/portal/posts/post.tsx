@@ -6,10 +6,10 @@ import IconNumberComponent from "@/components/iconNumberComponent";
 import Link from "next/link";
 import Post from "@/types/Post";
 import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTimeAgo";
-import checkIfPostIsLiked from "./checkIfPostIsLiked";
+import checkIfPostIsLiked from "@/apiCalls/checkIfPostIsLiked";
 import { useState, useEffect } from "react";
-import addLike from "./addLike";
-import deleteLike from "./deleteLike";
+import addLike from "@/apiCalls/addLike";
+import deleteLike from "@/apiCalls/deleteLike";
 import UserMessage from "@/components/userMessage";
 import ReportModal from "@/components/reportModal";
 

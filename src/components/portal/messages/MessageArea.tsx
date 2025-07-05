@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import MyMessage from "./myMessage";
 import TheirMessage from "./theirMessage";
-import getChat from "@/app/portal/messages/getChat";
+import getChat from "@/apiCalls/getChat";
 import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import User from "@/types/User";
-import getUser from "@/app/portal/(layout)/profile/getUser";
+import getUser from "@/apiCalls/getUser";
 import handleSendMessage from "@/actions/sendMessage/handleSendMessage";
 
 interface MessageAreaProps {
