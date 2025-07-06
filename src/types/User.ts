@@ -1,3 +1,5 @@
+import Notification from "./Notifcation";
+
 export default interface User {
     id: string;
     username: string;
@@ -5,4 +7,5 @@ export default interface User {
     postsCount: number;
     followersCount: number;
     followingCount: number;
+    notifications: Notification[];
 }
