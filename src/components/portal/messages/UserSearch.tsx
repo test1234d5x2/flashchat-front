@@ -51,7 +51,7 @@ export default function UserSearch({ handleChatClick }: { handleChatClick: (user
                 onChange={(e) => handleSearch(e.target.value)}
                 defaultValue={searchParams.get("search")?.toString() || ""}
             />
-            <div className="absolute bg-white z-50 w-full flex flex-col border border-gray-200">
+            <div className="absolute bg-white z-50 w-full flex flex-col border border-gray-200 max-h-[50%] overflow-y-scroll">
                 {!searchParams.get("search") ? "" :
                     users.map((user) => {
                         return (

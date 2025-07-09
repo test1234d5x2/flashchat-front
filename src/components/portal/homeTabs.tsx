@@ -1,14 +1,10 @@
-"use client";
+import FeedType from "@/enums/FeedTypes"
 
-import { useState } from "react";
-
-export default function HomeTabs() {
-    const [selectedTab, setSelectedTab] = useState("For You")
-
+export default function HomeTabs({selectedTab, setTab}: { selectedTab: string, setTab: (tab: FeedType) => void }) {
     return (
         <div className="flex justify-between w-full">
-            <Tab title="For You" selected={selectedTab === "For You"} onClick={() => setSelectedTab("For You")} />
-            <Tab title="Following" selected={selectedTab === "Following"} onClick={() => setSelectedTab("Following")} />
+            <Tab title="For You" selected={selectedTab === FeedType.FORYOU} onClick={() => setTab(FeedType.FORYOU)} />
+            <Tab title="Following" selected={selectedTab === FeedType.FOLLOWING} onClick={() => setTab(FeedType.FOLLOWING)} />
         </div>
     )
 }
