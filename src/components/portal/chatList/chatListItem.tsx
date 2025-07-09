@@ -1,6 +1,5 @@
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
-import Link from "next/link";
 
 export default function ChatListItem({ user }: { user: any }) {
     return (

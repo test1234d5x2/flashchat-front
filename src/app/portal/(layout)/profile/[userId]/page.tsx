@@ -1,7 +1,7 @@
 import ProfileCard from "@/components/portal/profileCard/profileCard";
 import PostList from "@/components/portal/posts/postList";
 import getUser from "@/apiCalls/getUser";
-import getPostsByUser from "@/apiCalls/getPostsByUser";
+import FeedType from "@/enums/FeedTypes";
 
 interface ProfilePageProps {
     params: {
@@ -16,12 +16,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     const user = data.data;
     if (!data.success || !user) {
         return <div>User not found</div>;
-    }
-
-    const postsData = await getPostsByUser(userId);
-    const posts = postsData.data;
-    if (!postsData.success) {
-        return <div>Posts not found</div>;
     }
 
     return (
@@ -41,7 +35,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             </section>
             <section className="px-8 bg-gray-100">
                 <section className="flex flex-col bg-gray-100 overflow-y-scroll">
-                    {posts ? <PostList posts={posts} /> : <div>No posts</div>}
+                    <PostList feedType={FeedType.USER} user={user} />
                 </section>
             </section>
         </section>

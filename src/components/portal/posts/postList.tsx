@@ -4,14 +4,18 @@ import PostComponent from "@/components/portal/posts/post";
 import { useRouter } from "next/navigation";
 import Post from "@/types/Post";
 import { useEffect, useState, useCallback } from "react";
-import getPosts from "@/apiCalls/getPosts";
+import getPosts from "@/apiCalls/getFeed";
+import FeedType from "@/enums/FeedTypes";
+import getFollowingPosts from "@/apiCalls/getFollowingPosts";
+import User from "@/types/User";
+import getPostsByUser from "@/apiCalls/getPostsByUser";
 
-export default function PostList({ posts: initialPosts = [] }: { posts?: Post[] }) {
+export default function PostList({ feedType, user }: { feedType: FeedType, user?: User }) {
 
     const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
 
     const router = useRouter();
-    const [posts, setPosts] = useState<Post[]>(initialPosts);
+    const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -19,8 +23,19 @@ export default function PostList({ posts: initialPosts = [] }: { posts?: Post[] 
     const fetchMorePosts = useCallback(async () => {
         if (loading || !hasMore) return;
         setLoading(true);
-        
-        const response = await getPosts(LOGGED_IN_USER_ID, page + 1);
+
+        let response: {data: Post[], success: boolean};
+        if (feedType === FeedType.FOLLOWING) {
+            response = await getFollowingPosts(LOGGED_IN_USER_ID, page + 1);
+        }
+        else if (feedType === FeedType.USER && user) {
+            response = await getPostsByUser(user.id, page + 1);
+        }
+        else {
+            response = await getPosts(LOGGED_IN_USER_ID, page + 1);
+        }
+
+
         if (response.success) {
             const newPosts = response.data;
             if (newPosts.length === 0) {
@@ -33,7 +48,7 @@ export default function PostList({ posts: initialPosts = [] }: { posts?: Post[] 
         }
 
         setLoading(false);
-    }, [loading, hasMore, page, posts]);
+    }, [loading, hasMore, page]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,9 +63,36 @@ export default function PostList({ posts: initialPosts = [] }: { posts?: Post[] 
         return () => window.removeEventListener("scroll", handleScroll);
     }, [fetchMorePosts, loading, hasMore]);
 
-    if (!posts || posts.length === 0) {
-        return <div>No posts</div>;
-    }
+    useEffect(() => {
+        const loadInitialPosts = async () => {
+            setLoading(true);
+            let response: {data: Post[], success: boolean};
+            if (feedType === FeedType.FOLLOWING) {
+                response = await getFollowingPosts(LOGGED_IN_USER_ID, 1);
+            }
+            else if (feedType === FeedType.USER && user) {
+                response = await getPostsByUser(user.id, 1);
+            }
+            else {
+                response = await getPosts(LOGGED_IN_USER_ID, 1);
+            }
+
+            if (response.success) {
+                setPosts(response.data);
+                if (response.data.length < 10) {
+                    setHasMore(false);
+                }
+            } 
+            else {
+                console.error("Failed to fetch initial posts");
+            }
+
+            setLoading(false);
+        }
+
+        setPosts([]); // Clear posts on feed type change
+        loadInitialPosts();
+    }, [feedType])
 
     return (
         <div>
@@ -59,7 +101,18 @@ export default function PostList({ posts: initialPosts = [] }: { posts?: Post[] 
                     <PostComponent post={post} />
                 </div>
             ))}
+            {loading && posts.length === 0 && (
+                <div className="p-4 bg-gray-100 rounded-lg h-full">
+                    <div className="animate-pulse flex-col space-y-4">
+                        <div className="h-4 bg-gray-300 rounded w-full h-36"></div>
+                        <div className="h-4 bg-gray-300 rounded w-full h-36"></div>
+                        <div className="h-4 bg-gray-300 rounded w-full h-36"></div>
+                        <div className="h-4 bg-gray-300 rounded w-full h-36"></div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
 // TODO: Pagination done but needs refactoring.
