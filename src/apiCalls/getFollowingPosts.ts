@@ -1,8 +1,17 @@
+"use server"
+
 import Post from "@/types/Post";
+import getAccessToken from "@/utils/getAccessTokenCookie";
 
 export default async function getFollowingPosts(userId: string, page: number = 1) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/following/${userId}/${page}`);
+        const accessToken = await getAccessToken()
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/following/${userId}/${page}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}` 
+            }
+        });
         const data: Post[] = await res.json();
 
         return {success: true, data: data};

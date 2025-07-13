@@ -32,7 +32,7 @@ export default function MessagesSideBar({ setChatError, setChatShowing, setOther
 
     useEffect(() => {
         getChatList(LOGGED_IN_USER_ID).then((chatList) => {
-            setChatList(chatList);
+            setChatList(chatList.chatList);
         });
     }, []);
     
