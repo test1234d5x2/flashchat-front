@@ -2,7 +2,7 @@
 
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function addLike(postId: string, userId: string) {
+export default async function addLike(postId: string) {
     try {
 
         const accessToken = await getAccessToken()
@@ -18,7 +18,7 @@ export default async function addLike(postId: string, userId: string) {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ postId, userId }),
+            body: JSON.stringify({ postId }),
         });
         const data: boolean = await res.json();
         return { success: true, data: data, message: '' };

@@ -16,15 +16,13 @@ import ImageSet from "./imageSet";
 
 export default function PostComponent({ post }: { post: Post }) {
 
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(post.likes.length);
     const [message, setMessage] = useState("");
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     useEffect(() => {
-        checkIfPostIsLiked(post.id, LOGGED_IN_USER_ID).then((data) => {
+        checkIfPostIsLiked(post.id).then((data) => {
             if (data.success) {
                 setIsLiked(data.data);
             }
@@ -32,13 +30,10 @@ export default function PostComponent({ post }: { post: Post }) {
     }, [post]);
 
     const handleLikeClick = () => {
-        if (post.user.id === LOGGED_IN_USER_ID) {
-            setMessage("Error: You cannot like your own post");
-            return;
-        }
+        // TODO: Check if the user is liking their own post. Do not allow.
 
         if (isLiked) {
-            deleteLike(post.id, LOGGED_IN_USER_ID).then((data) => {
+            deleteLike(post.id).then((data) => {
                 if (data.success) {
                     setIsLiked(false);
                     setLikes(likes - 1);
@@ -47,7 +42,7 @@ export default function PostComponent({ post }: { post: Post }) {
         }
 
         else {
-            addLike(post.id, LOGGED_IN_USER_ID).then((data) => {
+            addLike(post.id).then((data) => {
                 if (data.success) {
                     setIsLiked(true);
                     setLikes(likes + 1);
@@ -108,7 +103,7 @@ export default function PostComponent({ post }: { post: Post }) {
                 </section>
                 {message && <UserMessage message={message} setMessage={setMessage} />}
             </section>
-            {isReportModalOpen && <ReportModal postId={post.id} userId={post.user.id} setIsReportModalOpen={setIsReportModalOpen} />}
+            {isReportModalOpen && <ReportModal postId={post.id} setIsReportModalOpen={setIsReportModalOpen} />}
         </section>
     );
 }

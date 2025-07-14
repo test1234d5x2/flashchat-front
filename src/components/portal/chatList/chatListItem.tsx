@@ -1,7 +1,8 @@
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
+import User from "@/types/User";
 
-export default function ChatListItem({ user }: { user: any }) {
+export default function ChatListItem({ user }: { user: User }) {
     return (
         <div className="p-4 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded">
             <div className="w-10 h-10 relative">

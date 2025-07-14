@@ -9,17 +9,18 @@ import { revalidatePath } from "next/cache";
 
 export default async function ProfileCard({ user }: { user: User }) {
 
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-    const isFollowingResponse = await checkFollow(LOGGED_IN_USER_ID, user.id);
+    const isFollowingResponse = await checkFollow(user.id);
     const isFollowing = isFollowingResponse.isFollowing;    
 
     const handleFollow = async (formData: FormData) => {
         "use server";
 
-        const response = isFollowing ? await unfollow(LOGGED_IN_USER_ID, user.id) : await createFollow(LOGGED_IN_USER_ID, user.id);
+        const response = isFollowing ? await unfollow(user.id) : await createFollow(user.id);
         // TODO: If the response is not successful, show an error message.
         revalidatePath(`/portal/profile/${user.id}`);
     }
+
+    // TODO: Check that the form does not appear if the user is viewing their own page.
 
     return (
         <section className="flex flex-row gap-4 bg-white p-10 rounded-lg">
@@ -31,7 +32,7 @@ export default async function ProfileCard({ user }: { user: User }) {
                     <span className="font-bold text-gray-900 text-xl">{user.username} {/* name */}</span>
                     <span>@{user.handle} {/* handle */}</span>
                 </div>
-                {LOGGED_IN_USER_ID !== user.id && (
+                {(
                     <form action={handleFollow}>
                         <button className={styles.postButton}>{isFollowing ? "Following" : "Follow"}</button>
                     </form>

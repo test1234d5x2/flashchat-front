@@ -3,7 +3,7 @@
 import Post from "@/types/Post";
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function getFeed(userId: string, page: number = 1) {
+export default async function getFeed(page: number = 1) {
     try {
 
         const accessToken = await getAccessToken()
@@ -13,7 +13,7 @@ export default async function getFeed(userId: string, page: number = 1) {
             return { success: false, data: [], message: "Error: You must be logged in to add a comment." };
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/feed/${userId}/${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/feed/${page}`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }

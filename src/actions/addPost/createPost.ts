@@ -1,6 +1,6 @@
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function createPost(userId: string, post: string, images?: File[]) {
+export default async function createPost(post: string, images?: File[]) {
     try {
 
         const accessToken = await getAccessToken()
@@ -11,7 +11,6 @@ export default async function createPost(userId: string, post: string, images?: 
         }
 
         const formData = new FormData();
-        formData.append('userId', userId);
         formData.append('post', post);
         
         if (images && images.length > 0) {

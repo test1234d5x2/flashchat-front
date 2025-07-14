@@ -3,21 +3,20 @@
 import { useState } from "react";
 import MessageArea from "@/components/portal/messages/MessageArea";
 import MessagesSideBar from "@/components/portal/messages/MessagesSideBar";
+import User from "@/types/User";
+import Chat from "@/types/Chat";
 
 export default function MessagePlaceholderPage() {
 
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-
     const [chatError, setChatError] = useState(false);
-    const [chatShowing, setChatShowing] = useState(false);
-    const [otherUserId, setOtherUserId] = useState("");
+    const [chat, setChat] = useState<Chat>();
 
     return (
         <section className="flex flex-row h-screen overflow-hidden">
-            <MessagesSideBar setChatError={setChatError} setChatShowing={setChatShowing} setOtherUserId={setOtherUserId} />
+            <MessagesSideBar setChatError={setChatError} setChat={setChat} />
             <main className="w-full lg:w-4/5">
                 <section className="h-full">
-                    {!chatShowing ? <NoChatLoaded /> : chatError ? <ChatLoadingError /> : <MessageArea otherUserId={otherUserId} loggedInUserId={LOGGED_IN_USER_ID} />}
+                    {!chat ? <NoChatLoaded /> : chatError ? <ChatLoadingError /> : <MessageArea chat={chat} />}
                 </section>
             </main>            
         </section>

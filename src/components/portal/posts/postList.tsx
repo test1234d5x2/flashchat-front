@@ -12,8 +12,6 @@ import getPostsByUser from "@/apiCalls/getPostsByUser";
 
 export default function PostList({ feedType, user }: { feedType: FeedType, user?: User }) {
 
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-
     const router = useRouter();
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(1);
@@ -26,13 +24,13 @@ export default function PostList({ feedType, user }: { feedType: FeedType, user?
 
         let response: {data: Post[], success: boolean};
         if (feedType === FeedType.FOLLOWING) {
-            response = await getFollowingPosts(LOGGED_IN_USER_ID, page + 1);
+            response = await getFollowingPosts(page + 1);
         }
         else if (feedType === FeedType.USER && user) {
             response = await getPostsByUser(user.id, page + 1);
         }
         else {
-            response = await getPosts(LOGGED_IN_USER_ID, page + 1);
+            response = await getPosts(page + 1);
         }
 
 
@@ -68,13 +66,13 @@ export default function PostList({ feedType, user }: { feedType: FeedType, user?
             setLoading(true);
             let response: {data: Post[], success: boolean};
             if (feedType === FeedType.FOLLOWING) {
-                response = await getFollowingPosts(LOGGED_IN_USER_ID, 1);
+                response = await getFollowingPosts(1);
             }
             else if (feedType === FeedType.USER && user) {
                 response = await getPostsByUser(user.id, 1);
             }
             else {
-                response = await getPosts(LOGGED_IN_USER_ID, 1);
+                response = await getPosts(1);
             }
 
             if (response.success) {
