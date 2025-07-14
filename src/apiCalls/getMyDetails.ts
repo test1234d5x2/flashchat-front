@@ -3,7 +3,7 @@
 import User from "@/types/User";
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function getUser(userId: string) {
+export default async function getMyDetails() {
     try {
         const accessToken = await getAccessToken()
 
@@ -12,7 +12,7 @@ export default async function getUser(userId: string) {
             return { success: false, data: null, message: "Error: You must be logged in to add a comment." };
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/details/${userId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/details/me`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }

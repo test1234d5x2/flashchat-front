@@ -16,6 +16,7 @@ export default async function addLike(postId: string, userId: string) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`
             },
             body: JSON.stringify({ postId, userId }),
         });

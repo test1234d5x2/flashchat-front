@@ -12,7 +12,11 @@ export default async function getPostsByUser(userId: string, page: number = 1) {
             return { success: false, data: [], message: "Error: You must be logged in to add a comment." };
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/user/${userId}/${page}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/user/${userId}/${page}`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
         const data: Post[] = await response.json();
         return { success: true, data: data, message: "" };
     } catch (error) {

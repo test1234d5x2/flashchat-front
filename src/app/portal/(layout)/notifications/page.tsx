@@ -1,11 +1,9 @@
-import getUser from "@/apiCalls/getUser";
+import getMyDetails from "@/apiCalls/getMyDetails";
 import NotificationComponent from "@/components/portal/notifications/notification";
 import type Notification from "@/types/Notifcation";
 
 export default async function NotificationsPage() {
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-
-    const response = await getUser(LOGGED_IN_USER_ID);
+    const response = await getMyDetails();
     const user = response.data;
 
     if (!user || !response.success) {
