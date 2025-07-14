@@ -11,7 +11,7 @@ const reasons = [
     "Other"
 ];
 
-export default function ReportModal({ postId, userId, setIsReportModalOpen }: { postId: string, userId: string, setIsReportModalOpen: (isReportModalOpen: boolean) => void }) {
+export default function ReportModal({ postId, setIsReportModalOpen }: { postId: string, setIsReportModalOpen: (isReportModalOpen: boolean) => void }) {
     const [chosenReason, setChosenReason] = useState("Spam");
     const [otherReason, setOtherReason] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export default function ReportModal({ postId, userId, setIsReportModalOpen }: { 
     const handleAddReportWithDetails = async (formData: FormData) => {
         formData.set("reason", chosenReason === "Other" ? otherReason : chosenReason);
         try {
-            await handleAddReport(formData, postId, userId);
+            await handleAddReport(formData, postId);
             setIsReportModalOpen(false); 
             router.replace(`/portal/home`);
         } catch (err: any) {

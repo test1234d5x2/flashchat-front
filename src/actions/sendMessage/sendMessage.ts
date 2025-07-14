@@ -2,7 +2,7 @@
 
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function sendMessage(chatId: string, message: string, senderId: string) {
+export default async function sendMessage(chatId: string, message: string) {
     try {
 
         const accessToken = await getAccessToken()
@@ -18,7 +18,7 @@ export default async function sendMessage(chatId: string, message: string, sende
                 "Authorization": `Bearer: ${accessToken}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ chatId, content: message, userId: senderId })
+            body: JSON.stringify({ chatId, content: message })
         })
 
         const data = await response.json();

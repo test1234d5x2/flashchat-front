@@ -2,7 +2,7 @@
 
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function addReport(reason: string, postId: string, userId: string) {
+export default async function addReport(reason: string, postId: string) {
     try {
 
         const accessToken = await getAccessToken()
@@ -21,7 +21,6 @@ export default async function addReport(reason: string, postId: string, userId: 
             body: JSON.stringify({
                 reason,
                 postId,
-                reporterId: userId
             })
         })
 

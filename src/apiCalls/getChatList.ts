@@ -1,5 +1,6 @@
 "use server"
 
+import Chat from "@/types/Chat";
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
 export default async function getChatList() {
@@ -16,7 +17,7 @@ export default async function getChatList() {
                 "Authorization": `Bearer ${accessToken}`
             }
         });
-        const data = await response.json();
+        const data: Chat[] = await response.json();
         return { success: true, chatList: data, message: ""};
     } catch (error) {
         console.error(error);

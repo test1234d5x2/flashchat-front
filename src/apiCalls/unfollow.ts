@@ -2,7 +2,7 @@
 
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function unfollow(followerId: string, followedId: string) {
+export default async function unfollow(followedId: string) {
     try {
         const accessToken = await getAccessToken()
 
@@ -17,7 +17,7 @@ export default async function unfollow(followerId: string, followedId: string) {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ followerId: followerId, followedId: followedId })
+            body: JSON.stringify({ followedId })
         });
 
         const success = await response.json();

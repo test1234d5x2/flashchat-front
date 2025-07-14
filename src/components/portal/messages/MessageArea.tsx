@@ -7,55 +7,36 @@ import getChat from "@/apiCalls/getChat";
 import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
-import User from "@/types/User";
 import handleSendMessage from "@/actions/sendMessage/handleSendMessage";
-import getOtherUserDetails from "@/apiCalls/getOtherUserDetails";
+import Chat from "@/types/Chat";
+import getMyDetails from "@/apiCalls/getMyDetails";
 
 interface MessageAreaProps {
-    otherUserId: string;
-    loggedInUserId: string;
+    chat: Chat
 }
 
-export default function MessageArea({ otherUserId, loggedInUserId }: MessageAreaProps) {
-    const [messages, setMessages] = useState<Message[]>([]);
+export default function MessageArea({ chat }: MessageAreaProps) {
     const [chatError, setChatError] = useState(false);
-    const [otherUser, setOtherUser] = useState<User | null>(null);
-    const [chatId, setChatId] = useState<string>("");
-
-    // TODO: This requires a username to get the other user's details so this needs changing.
-    useEffect(() => {
-        if (!otherUserId) return;
-        getOtherUserDetails(otherUserId).then((user) => {
-            if (user.success) {
-                setOtherUser(user.data);
-            }
-            // TODO: If there is no user, redirect to error page.
-        });
-    }, [otherUserId]);
+    const [myId, setMyId] = useState("")
 
     useEffect(() => {
-        if (!otherUserId) return;
-        getChat(otherUserId, loggedInUserId).then((chat) => {   
-            if (chat.success) {
-                setMessages(chat.messages);
-                setChatId(chat.chatId);
-                setChatError(false);
-            } else {
-                setMessages([]);
-                setChatError(true);
+        getMyDetails().then((response) => {
+            if (response.success && response.data) {
+                setMyId(response.data.id)
             }
-        });
-    }, [otherUserId, loggedInUserId]);
+        })
+    }, []);
+
+    const otherUser = chat.user1.id === myId ? chat.user2 : chat.user1
+
 
     const handleSubmit = (formData: FormData) => {
-        handleSendMessage(formData, chatId, loggedInUserId).then(() => {
-            getChat(otherUserId, loggedInUserId).then((chat) => {
-                if (chat.success) {
-                    setMessages(chat.messages);
-                    setChatId(chat.chatId);
+        if (!chat) return
+        handleSendMessage(formData, chat?.id).then(() => {
+            getChat(otherUser.id).then((chat) => {
+                if (chat.success && chat.chat) {
                     setChatError(false);
                 } else {
-                    setMessages([]);
                     setChatError(true);
                 }
             });
@@ -78,12 +59,9 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
                 <h1 className="text-2xl font-bold">{otherUser?.username}</h1>
             </section>
             <section className="flex flex-col py-4 gap-4 justify-end items-start flex-1 border-b border-gray-200 overflow-y-scroll">
-                {messages.map((message: Message) =>
-                    message.senderId === loggedInUserId ? (
-                        <MyMessage key={message.id} message={message} />
-                    ) : (
-                        <TheirMessage key={message.id} message={message} />
-                    )
+                {chat?.messages.map((message: Message) =>
+                    // Check whether it was their message or this user's message.
+                    <TheirMessage key={message.id} message={message} />
                 )}
             </section>
             <form className="flex flex-row gap-4 items-center w-full" action={handleSubmit}>

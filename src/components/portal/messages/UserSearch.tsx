@@ -7,9 +7,7 @@ import User from "@/types/User";
 import UserListItem from "../userList/userListItem";
 import userSearchQuery from "@/apiCalls/userSearchQuery";
 
-export default function UserSearch({ handleChatClick }: { handleChatClick: (user1Id: string, user2Id: string) => void }) {
-
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
+export default function UserSearch({ handleChatClick }: { handleChatClick: (otherParticiantId: string) => void }) {
 
     const [users, setUsers] = useState<User[]>([]);
 
@@ -55,7 +53,7 @@ export default function UserSearch({ handleChatClick }: { handleChatClick: (user
                 {!searchParams.get("search") ? "" :
                     users.map((user) => {
                         return (
-                            <div key={user.id} onClick={() => handleChatClick(user.id, LOGGED_IN_USER_ID)} className="hover:bg-gray-100 p-2 cursor-pointer">
+                            <div key={user.id} onClick={() => handleChatClick(user.id)} className="hover:bg-gray-100 p-2 cursor-pointer">
                                 <UserListItem user={user} />
                             </div>
                         )

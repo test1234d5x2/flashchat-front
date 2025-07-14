@@ -10,8 +10,6 @@ export default function AddPostForm() {
 
     const [message, setMessage] = useState("");
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
-
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
     
     const handleCreatePostWithDetails = (formData: FormData) => {
         // Add all selected images to the form data
@@ -20,7 +18,7 @@ export default function AddPostForm() {
         });
         
         console.log("Number of images:", selectedImages.length);
-        handleCreatePost(formData, LOGGED_IN_USER_ID).then((message) => {
+        handleCreatePost(formData).then((message) => {
             setMessage(message);
             setSelectedImages([]); // Clear selected images after successful post
         }).catch((error) => {

@@ -6,32 +6,37 @@ import { useEffect, useState } from "react";
 import getChat from "@/apiCalls/getChat";
 import getChatList from "@/apiCalls/getChatList";
 import UserSearch from "./UserSearch";
+import getMyDetails from "@/apiCalls/getMyDetails";
+import Chat from "@/types/Chat";
 
 
-export default function MessagesSideBar({ setChatError, setChatShowing, setOtherUserId }: { setChatError: (chatError: boolean) => void, setChatShowing: (chatShowing: boolean) => void, setOtherUserId: (otherUserId: string) => void }) {
-
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
+export default function MessagesSideBar({ setChatError, setChat }: { setChatError: (chatError: boolean) => void, setChat: (chat: Chat) => void }) {
 
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [chatList, setChatList] = useState<any[]>([]);
+    const [chatList, setChatList] = useState<Chat[]>([]);
+    const [myId, setMyId] = useState("")
 
-    const handleChatClick = (user1Id: string, user2Id: string) => {
-        setChatShowing(true);
-        getChat(user1Id, user2Id).then((chat) => {
-            if (chat.success) {
+    const handleChatClick = (otherParticiantId: string) => {
+        getChat(otherParticiantId).then((chat) => {
+            if (chat.success && chat.chat) {
                 setChatError(false);
-                setOtherUserId(user1Id === LOGGED_IN_USER_ID ? user2Id : user1Id);
+                setChat(chat.chat)
             }
             else {
                 setChatError(true);
-                setOtherUserId("");
             }
         });
     }
 
     useEffect(() => {
-        getChatList(LOGGED_IN_USER_ID).then((chatList) => {
+        getMyDetails().then((response) => {
+            if (response.success && response.data) {
+                setMyId(response.data.id)
+            }
+        })
+
+        getChatList().then((chatList) => {
             setChatList(chatList.chatList);
         });
     }, []);
@@ -46,9 +51,9 @@ export default function MessagesSideBar({ setChatError, setChatShowing, setOther
             </section>
             <div className="overflow-y-scroll h-full">
                 {chatList.map((chat) => {
-                    let otherUser = chat.user1Id === LOGGED_IN_USER_ID ? chat.user2 : chat.user1;
+                    const otherUser = chat.user1.id === myId ? chat.user2 : chat.user1
                     return (
-                        <section key={chat.id} onClick={() => handleChatClick(otherUser.id, LOGGED_IN_USER_ID)} className="hover:bg-gray-100 cursor-pointer">
+                        <section key={chat.id} onClick={() => handleChatClick(otherUser.id)} className="hover:bg-gray-100 cursor-pointer">
                             <ChatListItem user={otherUser} />
                         </section>
                     )
@@ -57,6 +62,6 @@ export default function MessagesSideBar({ setChatError, setChatShowing, setOther
             <section className="z-100 block absolute top-4 right-4 lg:hidden">
                 <div className="material-symbols-outlined cursor-pointer" onClick={() => setSidebarOpen(!sidebarOpen)}>menu</div>
             </section>
-        </aside>       
+        </aside>
     )
 }
