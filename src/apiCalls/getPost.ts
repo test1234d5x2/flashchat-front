@@ -8,7 +8,6 @@ export default async function getPost(postId: string) {
         
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts/post/${postId}`, {
             headers: {
-                
                 "Authorization": `Bearer ${accessToken}`
             }
         });

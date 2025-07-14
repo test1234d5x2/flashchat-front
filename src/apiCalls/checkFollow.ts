@@ -15,7 +15,8 @@ export default async function checkFollow(followerId: string, followedId: string
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/follows/check-follow`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`
             },
             body: JSON.stringify({ followerId: followerId, followedId: followedId })
         });

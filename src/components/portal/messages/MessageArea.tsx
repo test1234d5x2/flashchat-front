@@ -8,8 +8,8 @@ import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import User from "@/types/User";
-import getUser from "@/apiCalls/getUser";
 import handleSendMessage from "@/actions/sendMessage/handleSendMessage";
+import getOtherUserDetails from "@/apiCalls/getOtherUserDetails";
 
 interface MessageAreaProps {
     otherUserId: string;
@@ -22,9 +22,10 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
     const [otherUser, setOtherUser] = useState<User | null>(null);
     const [chatId, setChatId] = useState<string>("");
 
+    // TODO: This requires a username to get the other user's details so this needs changing.
     useEffect(() => {
         if (!otherUserId) return;
-        getUser(otherUserId).then((user) => {
+        getOtherUserDetails(otherUserId).then((user) => {
             if (user.success) {
                 setOtherUser(user.data);
             }
@@ -112,4 +113,4 @@ export default function MessageArea({ otherUserId, loggedInUserId }: MessageArea
             </form>
         </section>
     );
-} 
+}

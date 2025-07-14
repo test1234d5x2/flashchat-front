@@ -1,7 +1,7 @@
 import ProfileCard from "@/components/portal/profileCard/profileCard";
 import PostList from "@/components/portal/posts/postList";
-import getUser from "@/apiCalls/getUser";
 import FeedType from "@/enums/FeedTypes";
+import getOtherUserDetails from "@/apiCalls/getOtherUserDetails";
 
 interface ProfilePageProps {
     params: {
@@ -12,7 +12,7 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
     const { userId } = await params;
 
-    const data = await getUser(userId);
+    const data = await getOtherUserDetails(userId);
     const user = data.data;
     if (!data.success || !user) {
         return <div>User not found</div>;

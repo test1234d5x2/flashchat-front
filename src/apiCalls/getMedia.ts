@@ -12,7 +12,11 @@ export default async function getMedia(mediaId: string) {
             return { success: false, url: null, message: "Error: You must be logged in to add a comment." };
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/media/${mediaId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/media/${mediaId}`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
         if (!response.ok) {
             return {success: false, url: null, message: ""};
         }
