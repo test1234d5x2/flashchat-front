@@ -1,6 +1,6 @@
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function addComment(postId: string, comment: string, userId: string, parentCommentId?: string) {
+export default async function addComment(postId: string, comment: string, parentCommentId?: string) {
     try {
 
         const accessToken = await getAccessToken()
@@ -16,7 +16,7 @@ export default async function addComment(postId: string, comment: string, userId
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ postId, comment, userId, parentCommentId }),
+            body: JSON.stringify({ postId, comment, parentCommentId }),
         });
 
         if (!response.ok) {

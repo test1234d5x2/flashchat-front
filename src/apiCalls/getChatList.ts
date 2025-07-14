@@ -2,7 +2,7 @@
 
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
-export default async function getChatList(userId: string) {
+export default async function getChatList() {
     try {
         const accessToken = await getAccessToken()
 
@@ -11,7 +11,7 @@ export default async function getChatList(userId: string) {
             return { success: false, chatList: [], message: "Error: You must be logged in to add a comment." };
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/chats/userId/${userId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/chats/myChats`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }

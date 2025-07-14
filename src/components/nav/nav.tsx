@@ -1,5 +1,6 @@
 "use client";
 
+import handleLogout from "@/actions/logout/handleLogout";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -31,10 +32,6 @@ export default function Nav() {
             label: "Settings",
             href: "/portal/settings"
         },
-        {
-            label: "Logout",
-            href: "/portal/logout"
-        }
     ]
 
     return (
@@ -52,6 +49,13 @@ export default function Nav() {
                     </div>
                 );
             })}
+            <form className="w-full block" action={handleLogout}>
+                <button className="w-full cursor-pointer transition-colors px-2 py-1 rounded-md text-gray-500 hover:text-gray-700">
+                    <div className="text-left">
+                        Logout
+                    </div>
+                </button>
+            </form>
         </nav>
     );
 }

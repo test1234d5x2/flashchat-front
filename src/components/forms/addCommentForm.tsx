@@ -6,14 +6,14 @@ import UserMessage from "@/components/userMessage";
 import { useRouter } from "next/navigation";
 import handleAddComment from "@/actions/addComment/handleAddComment";
 
-export default function AddCommentForm({ postId, userId, parentCommentId }: { postId: string, userId: string, parentCommentId?: string }) {
+export default function AddCommentForm({ postId, parentCommentId }: { postId: string, parentCommentId?: string }) {
 
     const [message, setMessage] = useState("");
     const router = useRouter();
 
     const handleAddCommentWithDetails = async (formData: FormData) => {
         try {
-            await handleAddComment(formData, postId, userId, parentCommentId);
+            await handleAddComment(formData, postId, parentCommentId);
             setMessage("");
             router.refresh();
         } catch (err: any) {
