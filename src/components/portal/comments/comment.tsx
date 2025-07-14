@@ -10,7 +10,7 @@ import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTim
 import { useState } from "react";
 import CommentComponent from "./comment";
 
-export default function Comment({ comment, postId, userId }: { comment: Comment, postId: string, userId: string }) {
+export default function Comment({ comment, postId }: { comment: Comment, postId: string }) {
 
     const [showCommentReply, setShowCommentReply] = useState(false);
 
@@ -42,11 +42,11 @@ export default function Comment({ comment, postId, userId }: { comment: Comment,
                     </div>
                     {showCommentReply && (
                     <div>
-                        <AddCommentForm postId={postId} userId={userId} parentCommentId={comment.id} />
+                        <AddCommentForm postId={postId} parentCommentId={comment.id} />
                     </div>
                     )}
                     {comment.replies.map((reply: Comment) => (
-                        <CommentComponent key={reply.id} comment={reply} postId={postId} userId={userId} />
+                        <CommentComponent key={reply.id} comment={reply} postId={postId} />
                     ))}
                 </div>
             </section>

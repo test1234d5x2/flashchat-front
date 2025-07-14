@@ -9,8 +9,6 @@ import AddCommentForm from "@/components/forms/addCommentForm";
 export default async function PostDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
 
-    const LOGGED_IN_USER_ID = "44e64359-94f4-4aef-b217-94d90db71502";
-
     const post = await getPost(id);
     const postData = post.data;
 
@@ -28,14 +26,14 @@ export default async function PostDetailsPage({ params }: { params: { id: string
                     <Post post={postData} />
                 </div>
                 <section>
-                    <AddCommentForm postId={id} userId={LOGGED_IN_USER_ID} />
+                    <AddCommentForm postId={id} />
                 </section>
                 <section className="flex flex-col flex-1 p-2">
                     <h2 className="text-lg font-bold">Comments ({postData.comments.length})</h2>
                     <div className="flex flex-col gap-2">
                         {postData.comments.map((comment: Comment) => {
                             return (
-                                <CommentComponent key={comment.id} comment={comment} postId={id} userId={LOGGED_IN_USER_ID} />
+                                <CommentComponent key={comment.id} comment={comment} postId={id} />
                             )
                         })}
                     </div>

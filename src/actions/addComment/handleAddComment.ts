@@ -2,13 +2,13 @@
 
 import addComment from "./addComment";
 
-export default async function handleAddComment(formData: FormData, postId: string, userId: string, parentCommentId?: string) {
+export default async function handleAddComment(formData: FormData, postId: string, parentCommentId?: string) {
     const comment = formData.get("comment")?.toString();
     if (!comment) {
         throw new Error("Error: Comment cannot be empty");
     }
 
-    const response = await addComment(postId, comment, userId, parentCommentId);
+    const response = await addComment(postId, comment, parentCommentId);
     if (!response.success) {
         throw new Error(response.message);
     }

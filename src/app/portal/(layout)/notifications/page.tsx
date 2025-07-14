@@ -6,27 +6,30 @@ export default async function NotificationsPage() {
     const response = await getMyDetails();
     const user = response.data;
 
+
     if (!user || !response.success) {
-        // TODO: Redirect to error page.
         return <div>Error loading user</div>;
     }
 
     const notifications = user.notifications;
 
     return (
-        <div className="flex flex-col">
-            <section>
+            <section className="flex flex-col min-h-[100vh]">
                 <section className="border-b border-gray-200 p-4">
                     <h1 className="text-2xl font-bold">Notifications</h1>
                 </section>
-                <section className="flex flex-col overflow-y-scroll">
-                    {notifications.map((n: Notification) => {
+                <section className="flex flex-col overflow-y-scroll flex-grow">
+                    {notifications.length === 0 ? <NoNotificationMessage /> : notifications.map((n: Notification) => {
                         return (
                             <NotificationComponent key={n.id} notification={n} />
                         )
                     })}
                 </section>
             </section>
-        </div>
     )
+}
+
+
+const NoNotificationMessage = () => {
+    return <div className="w-full flex-grow flex items-center justify-center">No notifications.</div>
 }

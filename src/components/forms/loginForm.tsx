@@ -23,7 +23,7 @@ export default function LoginForm() {
         }
 
         if (loggedIn) {
-            //redirect("/portal/home");
+            redirect("/portal/home");
         }
 
         setIsLoading(false);
