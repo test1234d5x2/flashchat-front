@@ -13,9 +13,10 @@ import getMyDetails from "@/apiCalls/getMyDetails";
 
 interface MessageAreaProps {
     chat: Chat
+    setChat: (chat: Chat) => void
 }
 
-export default function MessageArea({ chat }: MessageAreaProps) {
+export default function MessageArea({ chat, setChat }: MessageAreaProps) {
     const [chatError, setChatError] = useState(false);
     const [myId, setMyId] = useState("")
 
@@ -32,10 +33,11 @@ export default function MessageArea({ chat }: MessageAreaProps) {
 
     const handleSubmit = (formData: FormData) => {
         if (!chat) return
-        handleSendMessage(formData, chat?.id).then(() => {
+        handleSendMessage(formData, chat.id).then(() => {
             getChat(otherUser.id).then((chat) => {
                 if (chat.success && chat.chat) {
                     setChatError(false);
+                    setChat(chat.chat)
                 } else {
                     setChatError(true);
                 }
@@ -61,7 +63,7 @@ export default function MessageArea({ chat }: MessageAreaProps) {
             <section className="flex flex-col py-4 gap-4 justify-end items-start flex-1 border-b border-gray-200 overflow-y-scroll">
                 {chat?.messages.map((message: Message) =>
                     // Check whether it was their message or this user's message.
-                    <TheirMessage key={message.id} message={message} />
+                    message.senderId !== myId ? <TheirMessage key={message.id} message={message} /> : <MyMessage key={message.id} message={message} />
                 )}
             </section>
             <form className="flex flex-row gap-4 items-center w-full" action={handleSubmit}>

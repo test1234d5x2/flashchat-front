@@ -15,7 +15,7 @@ export default async function sendMessage(chatId: string, message: string) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/messages`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer: ${accessToken}`,
+                "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ chatId, content: message })
