@@ -3,7 +3,6 @@
 import { useState } from "react";
 import MessageArea from "@/components/portal/messages/MessageArea";
 import MessagesSideBar from "@/components/portal/messages/MessagesSideBar";
-import User from "@/types/User";
 import Chat from "@/types/Chat";
 
 export default function MessagePlaceholderPage() {
@@ -16,9 +15,9 @@ export default function MessagePlaceholderPage() {
             <MessagesSideBar setChatError={setChatError} setChat={setChat} />
             <main className="w-full lg:w-4/5">
                 <section className="h-full">
-                    {!chat ? <NoChatLoaded /> : chatError ? <ChatLoadingError /> : <MessageArea chat={chat} />}
+                    {!chat ? <NoChatLoaded /> : chatError ? <ChatLoadingError /> : <MessageArea chat={chat} setChat={setChat} />}
                 </section>
-            </main>            
+            </main>
         </section>
     )
 }

@@ -54,7 +54,7 @@ export default function MessagesSideBar({ setChatError, setChat }: { setChatErro
                     const otherUser = chat.user1.id === myId ? chat.user2 : chat.user1
                     return (
                         <section key={chat.id} onClick={() => handleChatClick(otherUser.id)} className="hover:bg-gray-100 cursor-pointer">
-                            <ChatListItem user={otherUser} />
+                            <ChatListItem chat={chat} otherUser={otherUser} />
                         </section>
                     )
                 })}
