@@ -6,7 +6,7 @@ import Message from "@/types/Message";
 export default function TheirMessage({ message }: { message: Message }) {
     const date = convertTimestampStringToDateTime(message.timestamp);
     return (
-        <section className="flex flex-row w-full items-end justify-start gap-2">
+        <section className="flex flex-row w-full items-end justify-start gap-2 text-wrap">
             <section>
                 <div className="w-10 h-10 rounded-full relative">
                     <Image  

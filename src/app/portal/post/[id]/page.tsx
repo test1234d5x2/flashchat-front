@@ -5,6 +5,7 @@ import getPost from "@/apiCalls/getPost";
 import CommentComponent from "@/components/portal/comments/comment";
 import Comment from "@/types/Comment";
 import AddCommentForm from "@/components/forms/addCommentForm";
+import getMyDetails from "@/apiCalls/getMyDetails";
 
 export default async function PostDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
@@ -16,14 +17,19 @@ export default async function PostDetailsPage({ params }: { params: { id: string
         return <div>Post not found</div>
     }
 
+    let myId = ""
+    const me = await getMyDetails()
+    if (!me.success || !me.data) {
+        return
+    }
+
+    myId = me.data.id
+
     return (
         <section className="flex flex-row h-screen justify-center">
-            {/* {<div className="w-1/2 flex items-center justify-center max-h-screen">
-                <Image src={landingImage} alt="Post Image" />
-            </div>} */}
-            <section className="w-1/2 bg-gray-100 flex flex-col h-screen min-h-0 overflow-y-scroll">
+            <section className="w-2/3 bg-gray-100 flex flex-col h-screen min-h-0 overflow-y-scroll">
                 <div>
-                    <Post post={postData} />
+                    <Post post={postData} myId={myId} />
                 </div>
                 <section>
                     <AddCommentForm postId={id} />

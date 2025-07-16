@@ -22,7 +22,7 @@ export default async function createPost(post: string, images?: File[]) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/posts`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer: ${accessToken}`
+                "Authorization": `Bearer ${accessToken}`
             },
             body: formData
         });

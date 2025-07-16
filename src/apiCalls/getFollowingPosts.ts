@@ -13,7 +13,6 @@ export default async function getFollowingPosts(page: number = 1) {
             }
         });
         const data: Post[] = await res.json();
-
         return {success: true, data: data};
     } catch (error) {
         console.error(error);

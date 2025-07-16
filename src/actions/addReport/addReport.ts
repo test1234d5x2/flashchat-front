@@ -15,7 +15,7 @@ export default async function addReport(reason: string, postId: string) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer: ${accessToken}`,
+                "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({

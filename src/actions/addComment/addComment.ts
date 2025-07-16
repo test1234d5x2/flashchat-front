@@ -1,3 +1,5 @@
+"use server"
+
 import getAccessToken from "@/utils/getAccessTokenCookie";
 
 export default async function addComment(postId: string, comment: string, parentCommentId?: string) {

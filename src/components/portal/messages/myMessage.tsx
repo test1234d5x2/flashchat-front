@@ -8,7 +8,7 @@ export default function MyMessage({ message }: { message: Message }) {
     return (
         <section className="flex flex-row w-full items-end justify-end gap-2">
             <section className="bg-blue-500 text-white p-2 rounded-lg max-w-2/3">
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className="whitespace-pre-wrap break-words">{message.content}</p>
                 <p className="text-xs text-right">{`${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`}</p>
             </section>
             <section>

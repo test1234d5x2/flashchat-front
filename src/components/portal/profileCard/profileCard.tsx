@@ -6,21 +6,26 @@ import createFollow from "@/apiCalls/createFollow";
 import checkFollow from "@/apiCalls/checkFollow";
 import unfollow from "@/apiCalls/unfollow";
 import { revalidatePath } from "next/cache";
+import getMyDetails from "@/apiCalls/getMyDetails";
 
 export default async function ProfileCard({ user }: { user: User }) {
 
     const isFollowingResponse = await checkFollow(user.id);
-    const isFollowing = isFollowingResponse.isFollowing;    
+    const isFollowing = isFollowingResponse.isFollowing;
 
     const handleFollow = async (formData: FormData) => {
         "use server";
 
         const response = isFollowing ? await unfollow(user.id) : await createFollow(user.id);
-        // TODO: If the response is not successful, show an error message.
         revalidatePath(`/portal/profile/${user.id}`);
     }
 
-    // TODO: Check that the form does not appear if the user is viewing their own page.
+    let myProfileCard = false
+    const myDetailsResponse = await getMyDetails()
+
+    if (myDetailsResponse.success && myDetailsResponse.data) {
+        myProfileCard = myDetailsResponse.data.id === user.id
+    }
 
     return (
         <section className="flex flex-row gap-4 bg-white p-10 rounded-lg">
@@ -32,7 +37,7 @@ export default async function ProfileCard({ user }: { user: User }) {
                     <span className="font-bold text-gray-900 text-xl">{user.username} {/* name */}</span>
                     <span>@{user.handle} {/* handle */}</span>
                 </div>
-                {(
+                {!myProfileCard && (
                     <form action={handleFollow}>
                         <button className={styles.postButton}>{isFollowing ? "Following" : "Follow"}</button>
                     </form>
