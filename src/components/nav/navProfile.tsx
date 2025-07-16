@@ -5,13 +5,14 @@ import landingImage from "@/images/landingImage.jpg"
 import getMyDetails from "@/apiCalls/getMyDetails"
 import { useEffect, useState } from "react"
 import User from "@/types/User"
+import { useRouter } from "next/navigation"
 
 export default function NavProfile() {
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
         getMyDetails().then((response) => {
-            if (response.data) {
+            if (response.success && response.data) {
                 setUser(response.data)
             }
         })

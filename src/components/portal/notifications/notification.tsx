@@ -29,9 +29,6 @@ export default async function NotificationComponent({ notification }: { notifica
                     <p>{convertDateSubtractionToTimeAgo(new Date().getTime() - new Date(notification.createdAt).getTime())}</p>
                 </div>
             </section>
-            <div className="flex flex-row gap-2">
-                {/* TODO: Add like, reply & follow buttons depending on type of notification */}
-            </div>
         </section>
     )
 }

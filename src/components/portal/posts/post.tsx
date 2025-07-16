@@ -6,15 +6,15 @@ import IconNumberComponent from "@/components/iconNumberComponent";
 import Link from "next/link";
 import Post from "@/types/Post";
 import convertDateSubtractionToTimeAgo from "@/utils/convertDateSubtractionToTimeAgo";
-import checkIfPostIsLiked from "@/apiCalls/checkIfPostIsLiked";
 import { useState, useEffect } from "react";
 import addLike from "@/apiCalls/addLike";
 import deleteLike from "@/apiCalls/deleteLike";
 import UserMessage from "@/components/userMessage";
 import ReportModal from "@/components/reportModal";
 import ImageSet from "./imageSet";
+import getMyDetails from "@/apiCalls/getMyDetails";
 
-export default function PostComponent({ post }: { post: Post }) {
+export default function PostComponent({ post, myId }: { post: Post, myId: string }) {
 
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(post.likes.length);
@@ -22,15 +22,18 @@ export default function PostComponent({ post }: { post: Post }) {
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     useEffect(() => {
-        checkIfPostIsLiked(post.id).then((data) => {
-            if (data.success) {
-                setIsLiked(data.data);
+        for (let like of post.likes) {
+            if (like.likedById === myId) {
+                setIsLiked(true)
             }
-        });
-    }, [post]);
+        }
+    }, [post, myId]);
 
     const handleLikeClick = () => {
-        // TODO: Check if the user is liking their own post. Do not allow.
+        if (myId === post.user.id) {
+            setMessage("Error: You cannot like your own post!");
+            return
+        }
 
         if (isLiked) {
             deleteLike(post.id).then((data) => {

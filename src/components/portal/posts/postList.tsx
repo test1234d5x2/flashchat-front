@@ -9,6 +9,7 @@ import FeedType from "@/enums/FeedTypes";
 import getFollowingPosts from "@/apiCalls/getFollowingPosts";
 import User from "@/types/User";
 import getPostsByUser from "@/apiCalls/getPostsByUser";
+import getMyDetails from "@/apiCalls/getMyDetails";
 
 export default function PostList({ feedType, user }: { feedType: FeedType, user?: User }) {
 
@@ -17,6 +18,15 @@ export default function PostList({ feedType, user }: { feedType: FeedType, user?
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [myId, setMyId] = useState("")
+
+    useEffect(() => {
+        getMyDetails().then((response) => {
+            if (response.success && response.data) {
+                setMyId(response.data.id)
+            }
+        })
+    }, [])
 
     const fetchMorePosts = useCallback(async () => {
         if (loading || !hasMore) return;
@@ -96,7 +106,7 @@ export default function PostList({ feedType, user }: { feedType: FeedType, user?
         <div>
             {posts.map((post, index) => (
                 <div className="hover:bg-white cursor-pointer" key={index} onClick={() => router.push(`/portal/post/${post.id}`)}>
-                    <PostComponent post={post} />
+                    <PostComponent post={post} myId={myId} />
                 </div>
             ))}
             {loading && posts.length === 0 && (
@@ -112,5 +122,3 @@ export default function PostList({ feedType, user }: { feedType: FeedType, user?
         </div>
     );
 }
-
-// TODO: Pagination done but needs refactoring.
