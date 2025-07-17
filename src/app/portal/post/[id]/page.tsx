@@ -6,6 +6,7 @@ import CommentComponent from "@/components/portal/comments/comment";
 import Comment from "@/types/Comment";
 import AddCommentForm from "@/components/forms/addCommentForm";
 import getMyDetails from "@/apiCalls/getMyDetails";
+import BackButton from "./backButton";
 
 export default async function PostDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
@@ -27,7 +28,7 @@ export default async function PostDetailsPage({ params }: { params: { id: string
 
     return (
         <section className="flex flex-row h-screen justify-center">
-            <section className="w-2/3 bg-gray-100 flex flex-col h-screen min-h-0 overflow-y-scroll">
+            <section className="w-full md:w-2/3 bg-gray-100 flex flex-col h-screen min-h-0 overflow-y-scroll">
                 <div>
                     <Post post={postData} myId={myId} />
                 </div>
@@ -45,6 +46,7 @@ export default async function PostDetailsPage({ params }: { params: { id: string
                     </div>
                 </section>
             </section>
+            <BackButton />
         </section>
     )
 }

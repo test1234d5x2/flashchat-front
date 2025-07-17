@@ -12,7 +12,6 @@ import deleteLike from "@/apiCalls/deleteLike";
 import UserMessage from "@/components/userMessage";
 import ReportModal from "@/components/reportModal";
 import ImageSet from "./imageSet";
-import getMyDetails from "@/apiCalls/getMyDetails";
 
 export default function PostComponent({ post, myId }: { post: Post, myId: string }) {
 
