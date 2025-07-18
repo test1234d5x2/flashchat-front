@@ -80,29 +80,31 @@ export default function MessageArea({ chat, setChat }: MessageAreaProps) {
                 {chat.messages.length > 0 ? <DateComponent timestamp={chat.messages[0].timestamp} />: ""}
                 {messageSet}
             </section>
-            <form className="flex flex-row gap-4 items-center w-full" action={handleSubmit}>
+            <form className="flex flex-row gap-4 items-start w-full" action={handleSubmit}>
                 <div>
-                    <div className="w-10 h-10 rounded-full relative">
+                    <div className="w-10 h-10 rounded-full relative hidden md:block">
                         <Image src={landingImage} alt="Profile" className="rounded-full object-cover" fill />
                     </div>
                 </div>
-                <div className="flex-1">
-                    <input
-                        type="text"
-                        placeholder="Add a message"
-                        className="w-full p-2 rounded-md border border-gray-300 focus:border-highlight-default focus:outline-none"
-                        name="message"
-                    />
-                </div>
-                <div>
-                    <div className="flex flex-row gap-2">
-                        <div className="material-symbols-outlined cursor-pointer text-blue-500">add_photo_alternate</div>
-                        <div className="material-symbols-outlined cursor-pointer text-blue-500">gif</div>
-                        <div className="material-symbols-outlined cursor-pointer text-blue-500">emoji_emotions</div>
+                <div className="w-full flex flex-col gap-2">
+                    <div className="">
+                        <input
+                            type="text"
+                            placeholder="Add a message"
+                            className="w-full p-2 rounded-md border border-gray-300 focus:border-highlight-default focus:outline-none"
+                            name="message"
+                        />
                     </div>
-                </div>
-                <div>
-                    <button type="submit" className="material-symbols-outlined cursor-pointer bg-blue-500 p-2 text-white rounded-full hover:bg-blue-400">send</button>
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex flex-row gap-2">
+                            <div className="material-symbols-outlined cursor-pointer text-blue-500">add_photo_alternate</div>
+                            <div className="material-symbols-outlined cursor-pointer text-blue-500">gif</div>
+                            <div className="material-symbols-outlined cursor-pointer text-blue-500">emoji_emotions</div>
+                        </div>
+                        <div>
+                            <button type="submit" className="material-symbols-outlined cursor-pointer bg-blue-500 p-2 text-white rounded-full hover:bg-blue-400">send</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </section>

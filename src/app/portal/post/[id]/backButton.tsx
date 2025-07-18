@@ -10,6 +10,6 @@ export default function BackButton() {
     }
 
     return (
-        <span className="material-symbols-outlined absolute top-0 left-0 p-4 cursor-pointer" onClick={() => goBack()}>arrow_back</span>
+        <span className="material-symbols-outlined absolute top-0 right-0 md:left-0 p-4 cursor-pointer z-100" onClick={() => goBack()}>arrow_back</span>
     )
 }
