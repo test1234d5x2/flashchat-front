@@ -57,14 +57,17 @@ export default function MessageArea({ chat, setChat }: MessageAreaProps) {
     }
 
     let messageSet = []
+    let count = 0
 
     for (let x = 0; x < chat.messages.length; x++) {
         const message = chat.messages[x]
 
+
         if (x > 0) {
             const previousMessage = chat.messages[x-1]
             if (checkEqualDatesFromTimestamps(previousMessage.timestamp, message.timestamp)) {
-                messageSet.push(<DateComponent timestamp={message.timestamp} /> )
+                messageSet.push(<DateComponent key={count} timestamp={message.timestamp} /> )
+                count++
             }
         }
 
