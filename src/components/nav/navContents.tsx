@@ -4,8 +4,9 @@ import { styles } from "@/styles/styles";
 import NavProfile from "./navProfile";
 import Nav from "./nav";
 import { useState } from "react";
+import User from "@/types/User";
 
-export default function NavContents() {
+export default function NavContents({user}: {user: User}) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -14,7 +15,7 @@ export default function NavContents() {
             <section>
                 <section className={`absolute top-0 left-0 w-full h-full bg-white z-50 ${sidebarOpen ? "block" : "hidden"} md:relative md:block`}>
                     <NavProfile />
-                    <Nav />
+                    <Nav user={user} />
                 </section>
                 <section className="block absolute top-4 right-4 md:hidden z-100">
                     <div className="material-symbols-outlined cursor-pointer" onClick={() => setSidebarOpen(!sidebarOpen)}>{sidebarOpen ? "close" : "menu"}</div>
