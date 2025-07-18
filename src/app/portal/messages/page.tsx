@@ -12,7 +12,9 @@ export default function MessagePlaceholderPage() {
 
     return (
         <section className="flex flex-row h-screen overflow-hidden">
-            <MessagesSideBar setChatError={setChatError} setChat={setChat} />
+            <div className="lg:w-1/5 border-r border-gray-200">
+                <MessagesSideBar setChatError={setChatError} setChat={setChat} />
+            </div>
             <main className="w-full lg:w-4/5">
                 <section className="h-full">
                     {!chat ? <NoChatLoaded /> : chatError ? <ChatLoadingError /> : <MessageArea chat={chat} setChat={setChat} />}

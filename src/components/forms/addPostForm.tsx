@@ -55,7 +55,7 @@ export default function AddPostForm() {
             </div>
             )}
             
-            <div className="flex flex-row justify-between p-4">
+            <div className="flex flex-row flex-wrap justify-between p-4">
                 <div className="flex flex-row gap-2 py-2">
                     <label className="cursor-pointer flex items-center">
                         <input

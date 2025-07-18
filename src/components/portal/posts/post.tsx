@@ -70,12 +70,12 @@ export default function PostComponent({ post, myId }: { post: Post, myId: string
                             />
                         </div>
                         <div className="flex-1 flex flex-col gap-2">
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-col items-start md:items-center md:gap-2 md:flex-row">
                                 <Link href={`/portal/profile/${post.user.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
                                     <span className="font-bold text-gray-900">{post.user.username}</span>
                                 </Link>
                                 <span className="text-gray-500 text-sm">@{post.user.username}</span>
-                                <span className="text-gray-400 text-xs ml-2">· {timeAgo}</span>
+                                <span className="text-gray-400 text-xs ml-2 hidden md:block">{timeAgo}</span>
                             </div>
                             <p className="text-gray-800">
                                 {post.post}
