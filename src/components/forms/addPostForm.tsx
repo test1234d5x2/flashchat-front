@@ -65,9 +65,8 @@ export default function AddPostForm() {
                             onChange={handleImageChange}
                             className="hidden"
                         />
-                        <span className="material-symbols-outlined text-blue-500">attach_file</span>
+                        <span className="material-symbols-outlined text-blue-500">add_photo_alternate</span>
                     </label>
-                    <div className="material-symbols-outlined cursor-pointer text-blue-500">add_photo_alternate</div>
                     <div className="material-symbols-outlined cursor-pointer text-blue-500">gif</div>
                     <div className="material-symbols-outlined cursor-pointer text-blue-500">emoji_emotions</div>
                 </div>

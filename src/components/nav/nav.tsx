@@ -1,10 +1,11 @@
 "use client";
 
 import handleLogout from "@/actions/logout/handleLogout";
+import User from "@/types/User";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Nav() {
+export default function Nav({user}: {user: User}) {
     
     const pathname = usePathname();
     const navItems = [
@@ -26,11 +27,7 @@ export default function Nav() {
         },
         {
             label: "Profile",
-            href: "/portal/profile/sagdvashgd"
-        },
-        {
-            label: "Settings",
-            href: "/portal/settings"
+            href: `/portal/profile/${user.id}`
         },
     ]
 

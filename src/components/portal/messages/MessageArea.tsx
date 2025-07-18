@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import MyMessage from "./myMessage";
 import TheirMessage from "./theirMessage";
 import getChat from "@/apiCalls/getChat";
-import Message from "@/types/Message";
 import Image from "next/image";
 import landingImage from "@/images/landingImage.jpg";
 import handleSendMessage from "@/actions/sendMessage/handleSendMessage";
 import Chat from "@/types/Chat";
 import getMyDetails from "@/apiCalls/getMyDetails";
+import DateComponent from "./DateComponent";
+import checkEqualDatesFromTimestamps from "@/utils/checkEqualDatesFromTimestamps";
 
 interface MessageAreaProps {
     chat: Chat
@@ -55,16 +56,29 @@ export default function MessageArea({ chat, setChat }: MessageAreaProps) {
         );
     }
 
+    let messageSet = []
+
+    for (let x = 0; x < chat.messages.length; x++) {
+        const message = chat.messages[x]
+
+        if (x > 0) {
+            const previousMessage = chat.messages[x-1]
+            if (checkEqualDatesFromTimestamps(previousMessage.timestamp, message.timestamp)) {
+                messageSet.push(<DateComponent timestamp={message.timestamp} /> )
+            }
+        }
+
+        messageSet.push(message.senderId !== myId ? <TheirMessage key={message.id} message={message} /> : <MyMessage key={message.id} message={message} />)
+    }
+
     return (
         <section className="p-4 flex flex-col justify-between w-full gap-4 h-full">
             <section className="border-b border-gray-200 w-full p-4 text-center">
                 <h1 className="text-2xl font-bold">{otherUser?.username}</h1>
             </section>
             <section className="flex flex-col py-4 gap-4 justify-end items-start flex-1 border-b border-gray-200 overflow-y-scroll">
-                {chat?.messages.map((message: Message) =>
-                    // Check whether it was their message or this user's message.
-                    message.senderId !== myId ? <TheirMessage key={message.id} message={message} /> : <MyMessage key={message.id} message={message} />
-                )}
+                {chat.messages.length > 0 ? <DateComponent timestamp={chat.messages[0].timestamp} />: ""}
+                {messageSet}
             </section>
             <form className="flex flex-row gap-4 items-center w-full" action={handleSubmit}>
                 <div>
